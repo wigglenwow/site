@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WigglenWow | Portfolio</title>
+    <title>Elara Vance | Portfolio</title>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -85,7 +85,7 @@
     <nav class="fixed top-0 left-0 w-full bg-midnight/95 backdrop-blur-md z-50 py-6 px-6 md:px-12 border-b border-gold-dim transition-all duration-500">
         <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
             <div onclick="navigateTo('home')" class="font-serif text-xl cursor-pointer tracking-wider text-gold hover:opacity-60 transition-opacity font-bold">
-                WigglenWow
+                elara vance.
             </div>
             <ul class="flex flex-wrap justify-center gap-6 md:gap-8 text-sm font-light tracking-wide text-muted">
                 <li><button onclick="navigateTo('home')" class="nav-link hover:text-gold transition-colors duration-300 relative" data-target="home">Home</button></li>
@@ -109,12 +109,12 @@
             <section id="home" class="min-h-[90vh] flex flex-col justify-center items-center text-center px-4 pt-10">
                 <div class="fade-entry">
                     <h1 class="font-serif text-4xl md:text-6xl text-gold mb-8 leading-tight">
-                        A calm Gateaway <br /> to my creative space.
+                        Quiet observations <br /> of a loud world.
                     </h1>
                 </div>
                 <div class="fade-entry" style="animation-delay: 200ms;">
                     <p class="max-w-md mx-auto text-paper leading-loose font-light mb-10 text-lg">
-                        Welcome to my Space. This is where I collect my Thoughts, Creativity, and Passion.
+                        Welcome to my room. This is where I collect my thoughts, lines, and shadows. 
                         There is no rush here. Take your time, look around, and breathe.
                     </p>
                 </div>
@@ -132,8 +132,9 @@
                 <div class="flex justify-between items-baseline mb-12 fade-entry">
                     <p class="font-serif text-2xl text-gold italic">Recent pieces.</p>
                 </div>
+                <!-- Grid Container -->
                 <div id="artworks-grid-preview" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
-                    <!-- Javascript will populate this -->
+                    <!-- Javascript will populate this with 6 RANDOM items -->
                 </div>
                 <div class="mt-16 text-center fade-entry">
                     <button onclick="switchView('view-artworks-full')" class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted hover:text-gold border-b border-gold-dim hover:border-gold pb-1 transition-all">
@@ -145,11 +146,10 @@
             <!-- Experiments Preview -->
             <section id="experiments" class="py-24 max-w-5xl mx-auto">
                 <div class="mb-16 fade-entry">
-                    <h2 class="font-serif text-3xl mb-4 text-gold">The Desk</h2>
+                    <h2 class="font-serif text-3xl mb-4 text-gold">The Lab</h2>
                     <p class="text-muted font-light leading-relaxed max-w-xl">
-                        Not every art is done on paper and canvas. 
-                        This section is for the crazy ideas, the process,
-                        the "what if" moments using clay, daily items, and fabric.                  
+                        Not everything has to be finished. This section is for the messy, the process, 
+                        the "what if" moments using clay, code, and fabric.
                     </p>
                 </div>
                 <div id="experiments-grid-preview" class="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
@@ -225,9 +225,8 @@
                 <div class="fade-entry">
                     <h2 class="font-serif text-3xl mb-6 text-gold">Commission a piece</h2>
                     <p class="text-muted font-light leading-loose mb-10">
-                      I dont really do Commission work. But if you really want something made and feel 
-                        that I am the right person for it. Contact me through the form. We will make things
-                        together. Our creativity and my Skill combined.
+                        I take on a very limited number of commissions per year to ensure I can give each piece the soul it deserves. 
+                        If you have a space that needs a quiet conversation piece, please fill out the request form below.
                     </p>
                     <div class="bg-surface p-12 border border-gold-dim rounded-sm">
                         <p class="font-serif text-lg text-gold mb-6 italic">
@@ -251,7 +250,7 @@
                     </div>
                 </div>
                 <div class="w-full md:w-2/3 fade-entry" style="animation-delay: 200ms;">
-                    <h2 class="font-serif text-3xl mb-6 text-gold">I Hope it felt Calm.</h2>
+                    <h2 class="font-serif text-3xl mb-6 text-gold">It's nice to meet you.</h2>
                     <div class="space-y-6 text-paper font-light leading-loose text-lg">
                         <p>
                             I am Elara. I am an artist based in the rainy hills of Oregon. 
@@ -321,7 +320,7 @@
 
     <!-- Footer -->
     <footer class="py-12 border-t border-gold-dim text-center text-muted font-light text-xs tracking-widest uppercase">
-        <p>Designed with silence and creativity in mind</p>
+        <p>Designed with silence in mind.</p>
         <p class="mt-2" id="year"></p>
     </footer>
 
@@ -341,7 +340,18 @@
         };
 
         const DATA = {
-            artworks: generateItems(50, 'Art'),
+            artworks: [
+                { id: 1, title: "Midnight Reflection", year: "2024", type: "Oil on Canvas", aspect: "aspect-[3/4]", image: "images/Screenshot 2026-01-03 005840.png" },
+                { id: 2, title: "Golden Silence", year: "2024", type: "Charcoal", aspect: "aspect-[4/3]", image: "images/Screenshot 2026-01-03 005752.png" },
+                { id: 3, title: "Obsidian", year: "2023", type: "Mixed Media", aspect: "aspect-square", image: "images/Screenshot 2026-01-03 005903.png" },
+                { id: 4, title: "Ethereal Dust", year: "2023", type: "Digital", aspect: "aspect-[3/4]", image: "images/image_2ec881.png" },
+                { id: 5, title: "Shadow Play", year: "2022", type: "Photography", aspect: "aspect-square", image: "images/image_2ecbae.png" },
+                { id: 6, title: "Void Texture", year: "2022", type: "Oil", aspect: "aspect-[4/3]", image: "images/image_49a8b9.png" },
+                { id: 7, title: "Luminescent", year: "2021", type: "Acrylic", aspect: "aspect-[3/4]", image: "images/image_49a87b.png" },
+                // Filler items to make the archive look full. 
+                // You can remove this line if you ONLY want to show your 7 images.
+                ...generateItems(15, 'Archive Study')
+            ],
             experiments: generateItems(40, 'Exp'),
             shop: generateItems(30, 'Print'),
             journal: Array.from({ length: 20 }, (_, i) => ({
@@ -355,13 +365,16 @@
         // --- Render Functions ---
 
         function createArtworkCard(work, delay = 0) {
+            // Check if user provided a custom image, otherwise use placeholder
+            const imgSrc = work.image ? work.image : `https://picsum.photos/seed/${work.imageSeed}/800/1000`;
+            
             return `
             <div class="fade-entry group cursor-pointer" style="animation-delay: ${delay}ms">
                 <div class="w-full ${work.aspect} bg-surface overflow-hidden relative mb-4 border border-gold-dim">
                     <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-700 flex items-center justify-center text-gold z-10 opacity-0 group-hover:opacity-100">
                         <span class="font-serif italic text-lg">View Detail</span>
                     </div>
-                    <img src="https://picsum.photos/seed/${work.imageSeed}/800/1000" alt="${work.title}" loading="lazy" class="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000 ease-out">
+                    <img src="${imgSrc}" alt="${work.title}" loading="lazy" class="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000 ease-out">
                 </div>
                 <div class="flex justify-between items-baseline text-gold">
                     <h3 class="font-serif text-xl">${work.title}</h3>
@@ -427,7 +440,15 @@
 
         function init() {
             // Render Previews
-            document.getElementById('artworks-grid-preview').innerHTML = DATA.artworks.slice(0, 6).map((w, i) => createArtworkCard(w, i * 100)).join('');
+            
+            // 1. Randomize Artworks for Home Preview
+            // Clone the array and shuffle it
+            const shuffledArt = [...DATA.artworks].sort(() => 0.5 - Math.random());
+            // Take the first 6 items from the shuffled list
+            const randomPreviewArt = shuffledArt.slice(0, 6);
+            
+            document.getElementById('artworks-grid-preview').innerHTML = randomPreviewArt.map((w, i) => createArtworkCard(w, i * 100)).join('');
+            
             document.getElementById('experiments-grid-preview').innerHTML = DATA.experiments.slice(0, 4).map((w, i) => createExperimentCard(w, i * 100)).join('');
             document.getElementById('shop-grid-preview').innerHTML = DATA.shop.slice(0, 3).map((w, i) => createShopCard(w, i * 100)).join('');
             document.getElementById('journal-list-preview').innerHTML = DATA.journal.slice(0, 3).map((w, i) => createJournalEntry(w, i * 100)).join('');
