@@ -1,574 +1,532 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { Instagram, Mail, Youtube, ArrowRight, ExternalLink, PenTool, Coffee, Book, ArrowLeft } from 'lucide-react';
-
-// --- Data Generators ---
-
-const generateItems = (count, category) => {
-  return Array.from({ length: count }, (_, i) => ({
-    id: i + 1,
-    title: `${category} No. ${i + 1}`,
-    year: 2020 + (i % 5),
-    type: ['Oil on Canvas', 'Charcoal', 'Digital', 'Mixed Media'][i % 4],
-    aspect: i % 3 === 0 ? 'aspect-[3/4]' : i % 3 === 1 ? 'aspect-square' : 'aspect-[4/3]',
-    price: 80 + (i * 10),
-    imageSeed: i + (category === 'Art' ? 100 : category === 'Exp' ? 500 : 800)
-  }));
-};
-
-const DATA = {
-  artworks: generateItems(50, 'Art'),
-  experiments: generateItems(40, 'Exp'),
-  shop: generateItems(30, 'Print'),
-  journal: Array.from({ length: 20 }, (_, i) => ({
-    id: i,
-    date: `Oct ${10 + i}, 2023`,
-    title: i === 0 ? 'The gentle art of doing nothing' : `Reflection ${i + 1}: On Time`,
-    preview: 'Why do we return to certain colors? For me, cobalt has always felt like a memory I can’t quite place. It is cold yet inviting, deep yet flat...'
-  }))
-};
-
-// --- Components ---
-
-// 1. Navigation
-const Navigation = ({ currentView, onViewChange }) => {
-  const [activeSection, setActiveSection] = useState('home');
-
-  const handleNavClick = (id) => {
-    if (currentView !== 'home') {
-      onViewChange('home');
-      setTimeout(() => {
-        const element = document.getElementById(id);
-        if (element) element.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
-    } else {
-      const element = document.getElementById(id);
-      if (element) element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  useEffect(() => {
-    if (currentView !== 'home') {
-      setActiveSection('');
-      return;
-    }
-
-    const handleScroll = () => {
-      const sections = ['home', 'artworks', 'experiments', 'shop', 'journal', 'custom', 'about'];
-      const scrollPosition = window.scrollY + 200;
-
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element && element.offsetTop <= scrollPosition && (element.offsetTop + element.offsetHeight) > scrollPosition) {
-          setActiveSection(section);
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [currentView]);
-
-  const links = [
-    { id: 'home', label: 'Home' },
-    { id: 'artworks', label: 'Artworks' },
-    { id: 'experiments', label: 'Experiments' },
-    { id: 'shop', label: 'Shop' },
-    { id: 'journal', label: 'Journal' },
-    { id: 'custom', label: 'Custom Work' },
-    { id: 'about', label: 'About' },
-  ];
-
-  return (
-    <nav className="fixed top-0 left-0 w-full bg-[#121212]/95 backdrop-blur-md z-50 py-6 px-6 md:px-12 border-b border-[#D4AF37]/20 transition-all duration-500">
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-        <div 
-          onClick={() => handleNavClick('home')}
-          className="font-serif text-xl cursor-pointer tracking-wider text-[#D4AF37] hover:opacity-60 transition-opacity font-bold"
-        >
-          elara vance.
-        </div>
-        <ul className="flex flex-wrap justify-center gap-6 md:gap-8 text-sm font-light tracking-wide text-[#A1A1AA]">
-          {links.map((link) => (
-            <li key={link.id}>
-              <button
-                onClick={() => handleNavClick(link.id)}
-                className={`hover:text-[#D4AF37] transition-colors duration-300 relative ${
-                  activeSection === link.id ? 'text-[#D4AF37] font-normal after:content-[""] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-px after:bg-[#D4AF37]' : ''
-                }`}
-              >
-                {link.label}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </nav>
-  );
-};
-
-// 2. Footer
-const Footer = () => (
-  <footer className="py-12 mt-20 border-t border-[#D4AF37]/20 text-center text-[#71717A] font-light text-xs tracking-widest uppercase">
-    <p>Designed with silence in mind.</p>
-    <p className="mt-2">© {new Date().getFullYear()} Elara Vance</p>
-  </footer>
-);
-
-// 3. FadeIn Wrapper
-const FadeIn = ({ children, delay = 0, className = "" }) => (
-  <div 
-    className={`animate-fade-in-up ${className}`} 
-    style={{ animationDelay: `${delay}ms`, animationFillMode: 'both' }}
-  >
-    {children}
-  </div>
-);
-
-// --- Section Components ---
-
-const HomeSection = ({ scrollToId }) => (
-  <div className="min-h-[90vh] flex flex-col justify-center items-center text-center px-4 pt-20">
-    <FadeIn>
-      <h1 className="font-serif text-4xl md:text-6xl text-[#D4AF37] mb-8 leading-tight">
-        Quiet observations <br /> of a loud world.
-      </h1>
-    </FadeIn>
-    <FadeIn delay={200}>
-      <p className="max-w-md mx-auto text-[#E5E0D8] leading-loose font-light mb-10 text-lg">
-        Welcome to my room. This is where I collect my thoughts, lines, and shadows. 
-        There is no rush here. Take your time, look around, and breathe.
-      </p>
-    </FadeIn>
-    <FadeIn delay={400}>
-      <button 
-        onClick={() => {
-          const el = document.getElementById(scrollToId);
-          if(el) el.scrollIntoView({ behavior: 'smooth' });
-        }}
-        className="group flex items-center gap-2 text-[#A1A1AA] hover:text-[#D4AF37] transition-all duration-500 border-b border-transparent hover:border-[#D4AF37] pb-1"
-      >
-        View the collection <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-      </button>
-    </FadeIn>
-  </div>
-);
-
-const ArtworksSection = ({ onViewAll, isPreview = true }) => {
-  const displayItems = isPreview ? DATA.artworks.slice(0, 6) : DATA.artworks;
-
-  return (
-    <div className="max-w-6xl mx-auto">
-      <FadeIn>
-        <div className="flex justify-between items-baseline mb-12">
-          <p className="font-serif text-2xl text-[#D4AF37] italic">
-            {isPreview ? "Recent pieces." : "Complete Archive."}
-          </p>
-          {!isPreview && <span className="font-mono text-xs text-[#71717A]">{displayItems.length} works</span>}
-        </div>
-      </FadeIn>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
-        {displayItems.map((work, idx) => (
-          <FadeIn key={work.id} delay={(idx % 6) * 100}>
-            <div className="group cursor-pointer">
-              <div className={`w-full ${work.aspect} bg-[#1E1E1E] overflow-hidden relative mb-4 border border-[#D4AF37]/10`}>
-                <div className="absolute inset-0 bg-[#000000]/40 group-hover:bg-[#000000]/20 transition-colors duration-700 flex items-center justify-center text-[#D4AF37] z-10 opacity-0 group-hover:opacity-100">
-                   <span className="font-serif italic text-lg">View Detail</span>
-                </div>
-                <img 
-                   src={`https://picsum.photos/seed/${work.imageSeed}/800/1000`} 
-                   alt={work.title}
-                   className="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000 ease-out"
-                />
-              </div>
-              <div className="flex justify-between items-baseline text-[#D4AF37]">
-                <h3 className="font-serif text-xl">{work.title}</h3>
-                <span className="font-mono text-xs text-[#A1A1AA]">{work.year}</span>
-              </div>
-              <p className="text-sm font-light text-[#E5E0D8] mt-1">{work.type}</p>
-            </div>
-          </FadeIn>
-        ))}
-      </div>
-
-      {isPreview && (
-        <FadeIn delay={400}>
-          <div className="mt-16 text-center">
-            <button 
-              onClick={onViewAll}
-              className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#A1A1AA] hover:text-[#D4AF37] border-b border-[#D4AF37]/30 hover:border-[#D4AF37] pb-1 transition-all"
-            >
-              View Full Archive ({DATA.artworks.length}) <ArrowRight size={14} />
-            </button>
-          </div>
-        </FadeIn>
-      )}
-    </div>
-  );
-};
-
-const ExperimentsSection = ({ onViewAll, isPreview = true }) => {
-  const displayItems = isPreview ? DATA.experiments.slice(0, 4) : DATA.experiments;
-
-  return (
-    <div className="max-w-5xl mx-auto">
-      <FadeIn>
-        <div className="mb-16">
-          <h2 className="font-serif text-3xl mb-4 text-[#D4AF37]">
-            {isPreview ? "The Lab" : "Experimental Archive"}
-          </h2>
-          <p className="text-[#E5E0D8] font-light leading-relaxed max-w-xl">
-            Not everything has to be finished. This section is for the messy, the process, 
-            the "what if" moments using clay, code, and fabric.
-          </p>
-        </div>
-      </FadeIn>
-
-      <div className={`columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8`}>
-        {displayItems.map((item, idx) => (
-           <FadeIn key={item.id} delay={(idx % 6) * 100}>
-             <div className="break-inside-avoid mb-8">
-                <div className="bg-[#1E1E1E] p-6 rounded-sm border border-[#D4AF37]/10 hover:border-[#D4AF37]/30 transition-colors duration-500">
-                  <div className="aspect-video bg-[#2A2A2A] w-full mb-4 overflow-hidden grayscale hover:grayscale-0 transition-all duration-700">
-                     <img src={`https://picsum.photos/seed/${item.imageSeed}/600/400`} alt="Process" className="w-full h-full object-cover mix-blend-multiply opacity-90" />
-                  </div>
-                  <p className="font-mono text-xs text-[#71717A] mb-2">Exp. 0{item.id}</p>
-                  <p className="font-serif text-[#D4AF37]">Process study No. {item.id}</p>
-                </div>
-             </div>
-           </FadeIn>
-        ))}
-      </div>
-
-      {isPreview && (
-        <FadeIn delay={400}>
-          <div className="mt-16 text-center">
-            <button 
-              onClick={onViewAll}
-              className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#A1A1AA] hover:text-[#D4AF37] border-b border-[#D4AF37]/30 hover:border-[#D4AF37] pb-1 transition-all"
-            >
-              See All Experiments ({DATA.experiments.length}) <ArrowRight size={14} />
-            </button>
-          </div>
-        </FadeIn>
-      )}
-    </div>
-  );
-};
-
-const ShopSection = ({ onViewAll, isPreview = true }) => {
-  const displayItems = isPreview ? DATA.shop.slice(0, 3) : DATA.shop;
-  const tools = [
-    { name: 'Moleskine Sketchbook', category: 'Planning', link: '#' },
-    { name: 'Winsor & Newton Gouache', category: 'Painting', link: '#' },
-    { name: 'Sony A7III', category: 'Photography', link: '#' },
-  ];
-
-  return (
-    <div className="max-w-5xl mx-auto">
-      <section className="mb-24">
-        <FadeIn>
-          <div className="flex justify-between items-baseline mb-12">
-            <h2 className="font-serif text-3xl text-[#D4AF37]">{isPreview ? "Collect" : "Shop All Prints"}</h2>
-          </div>
-        </FadeIn>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {displayItems.map((item, idx) => (
-            <FadeIn key={item.id} delay={(idx % 6) * 100}>
-              <div className="group">
-                <div className="aspect-square bg-[#1E1E1E] mb-4 overflow-hidden border border-[#D4AF37]/10">
-                   <img src={`https://picsum.photos/seed/${item.imageSeed}/500/500`} alt="Print" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 opacity-90 group-hover:opacity-100" />
-                </div>
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="font-serif text-lg text-[#D4AF37]">{item.title}</h3>
-                    <p className="text-xs text-[#A1A1AA] mt-1 uppercase tracking-wider">Limited Print</p>
-                  </div>
-                  <span className="font-mono text-sm text-[#E5E0D8]">${item.price}</span>
-                </div>
-                <button className="mt-4 w-full py-2 border border-[#D4AF37]/30 text-[#A1A1AA] text-xs uppercase tracking-widest hover:bg-[#D4AF37] hover:text-[#121212] transition-colors">
-                  Add to Cart
-                </button>
-              </div>
-            </FadeIn>
-          ))}
-        </div>
-
-        {isPreview && (
-          <FadeIn delay={300}>
-            <div className="mt-16 text-center">
-              <button 
-                onClick={onViewAll}
-                className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#A1A1AA] hover:text-[#D4AF37] border-b border-[#D4AF37]/30 hover:border-[#D4AF37] pb-1 transition-all"
-              >
-                Browse Full Shop ({DATA.shop.length}) <ArrowRight size={14} />
-              </button>
-            </div>
-          </FadeIn>
-        )}
-      </section>
-
-      {isPreview && (
-        <section className="border-t border-[#D4AF37]/20 pt-16">
-          <FadeIn>
-            <h2 className="font-serif text-2xl mb-2 text-[#D4AF37]">Tools I Use</h2>
-            <p className="text-[#A1A1AA] font-light text-sm mb-8">Things that help me create. (Affiliate links)</p>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {tools.map((tool, idx) => (
-                <a key={idx} href={tool.link} className="flex items-center p-4 border border-[#D4AF37]/20 hover:border-[#D4AF37]/50 transition-colors group bg-[#1E1E1E]">
-                  <div className="p-3 bg-[#2A2A2A] text-[#D4AF37] mr-4 rounded-full group-hover:bg-[#D4AF37] group-hover:text-[#121212] transition-colors">
-                     {idx === 0 ? <Book size={18}/> : idx === 1 ? <PenTool size={18}/> : <ExternalLink size={18}/>}
-                  </div>
-                  <div>
-                    <h4 className="font-serif text-[#D4AF37]">{tool.name}</h4>
-                    <p className="text-xs text-[#A1A1AA] uppercase tracking-wide">{tool.category}</p>
-                  </div>
-                  <ArrowRight size={14} className="ml-auto text-[#71717A] group-hover:text-[#D4AF37] transition-colors" />
-                </a>
-              ))}
-            </div>
-          </FadeIn>
-        </section>
-      )}
-    </div>
-  );
-};
-
-const JournalSection = ({ onViewAll, isPreview = true }) => {
-  const displayItems = isPreview ? DATA.journal.slice(0, 3) : DATA.journal;
-
-  return (
-    <div className="max-w-2xl mx-auto">
-      <FadeIn>
-        <h2 className="font-serif text-3xl mb-12 text-[#D4AF37]">{isPreview ? "Reflections" : "Journal Archive"}</h2>
-      </FadeIn>
-      <div className="space-y-16">
-        {displayItems.map((entry, idx) => (
-          <FadeIn key={entry.id} delay={(idx % 6) * 100}>
-            <article className="group cursor-pointer">
-              <span className="font-mono text-xs text-[#71717A] mb-2 block">{entry.date}</span>
-              <h3 className="font-serif text-2xl text-[#D4AF37] mb-4 group-hover:text-[#F0E6D2] transition-colors">
-                {entry.title}
-              </h3>
-              <p className="text-[#E5E0D8] font-light leading-loose">
-                {entry.preview}
-              </p>
-              <span className="inline-block mt-4 text-xs uppercase tracking-widest text-[#A1A1AA] border-b border-transparent group-hover:border-[#D4AF37] transition-all">
-                Read Entry
-              </span>
-            </article>
-          </FadeIn>
-        ))}
-      </div>
-      
-      {isPreview && (
-        <FadeIn delay={300}>
-          <div className="mt-16 text-center">
-            <button 
-              onClick={onViewAll}
-              className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#A1A1AA] hover:text-[#D4AF37] border-b border-[#D4AF37]/30 hover:border-[#D4AF37] pb-1 transition-all"
-            >
-              Read All Entries ({DATA.journal.length}) <ArrowRight size={14} />
-            </button>
-          </div>
-        </FadeIn>
-      )}
-    </div>
-  );
-};
-
-const CustomWorkSection = () => (
-  <div className="max-w-xl mx-auto text-center">
-    <FadeIn>
-      <h2 className="font-serif text-3xl mb-6 text-[#D4AF37]">Commission a piece</h2>
-      <p className="text-[#E5E0D8] font-light leading-loose mb-10">
-        I take on a very limited number of commissions per year to ensure I can give each piece the soul it deserves. 
-        If you have a space that needs a quiet conversation piece, please fill out the request form below.
-      </p>
-
-      {/* Google Form Placeholder / Link */}
-      <div className="bg-[#1E1E1E] p-12 border border-[#D4AF37]/20 rounded-sm">
-        <p className="font-serif text-lg text-[#D4AF37] mb-6 italic">
-          Ready to start the conversation?
-        </p>
-        <a 
-          href="https://docs.google.com/forms/" // Replace with actual Google Form Link
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-block py-3 px-10 border border-[#D4AF37] bg-[#121212] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#121212] transition-all duration-500 text-sm uppercase tracking-widest shadow-sm hover:shadow-md hover:shadow-[#D4AF37]/20"
-        >
-          Open Request Form
-        </a>
-        <p className="mt-4 text-xs text-[#71717A] font-mono">
-          Opens in a new window via Google Forms
-        </p>
-      </div>
-    </FadeIn>
-  </div>
-);
-
-const AboutSection = () => (
-  <div className="max-w-4xl mx-auto flex flex-col md:flex-row gap-12 items-start">
-    <FadeIn className="w-full md:w-1/3">
-      <div className="aspect-[3/4] bg-[#1E1E1E] overflow-hidden border border-[#D4AF37]/20">
-        <img src="https://picsum.photos/seed/artist/800/1000" alt="Portrait" className="w-full h-full object-cover grayscale opacity-80" />
-      </div>
-    </FadeIn>
-    <FadeIn delay={200} className="w-full md:w-2/3">
-      <h2 className="font-serif text-3xl mb-6 text-[#D4AF37]">It's nice to meet you.</h2>
-      <div className="space-y-6 text-[#E5E0D8] font-light leading-loose text-lg">
-        <p>
-          I am Elara. I am an artist based in the rainy hills of Oregon. 
-          My work is primarily concerned with the things we usually ignore: 
-          the texture of peeling paint, the silence after a bell rings, the color of moss.
-        </p>
-        <p>
-          I believe art shouldn't shout. It should whisper. It should be a place where 
-          you can rest your eyes and your mind.
-        </p>
-        <p>
-          When I'm not painting, I'm usually drinking too much coffee, reading obscure 
-          philosophy, or trying to keep my houseplants alive.
-        </p>
-      </div>
-
-      <div className="mt-12 pt-12 border-t border-[#D4AF37]/20">
-        <p className="font-mono text-xs text-[#71717A] uppercase tracking-widest mb-6">Connect</p>
-        <div className="flex gap-6">
-          <a href="https://www.instagram.com/wigglenwow" target="_blank" rel="noopener noreferrer" className="text-[#A1A1AA] hover:text-[#D4AF37] transition-colors"><Instagram size={20} strokeWidth={1.5} /></a>
-          <a href="https://www.youtube.com/@wigglenwow" target="_blank" rel="noopener noreferrer" className="text-[#A1A1AA] hover:text-[#D4AF37] transition-colors"><Youtube size={20} strokeWidth={1.5} /></a>
-          <a href="mailto:akpnjani2@gmail.com" className="text-[#A1A1AA] hover:text-[#D4AF37] transition-colors"><Mail size={20} strokeWidth={1.5} /></a>
-        </div>
-      </div>
-    </FadeIn>
-  </div>
-);
-
-// --- Layouts ---
-
-const MainScrollLayout = ({ onViewChange }) => (
-  <div className="px-6 md:px-12 max-w-7xl mx-auto">
-    <section id="home">
-      <HomeSection scrollToId="artworks" />
-    </section>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elara Vance | Portfolio</title>
     
-    <div className="h-px bg-[#D4AF37] w-full max-w-2xl mx-auto my-12 opacity-30"></div>
-
-    <section id="artworks" className="py-24">
-      <ArtworksSection onViewAll={() => onViewChange('artworks')} />
-    </section>
-
-    <section id="experiments" className="py-24">
-      <ExperimentsSection onViewAll={() => onViewChange('experiments')} />
-    </section>
-
-    <section id="shop" className="py-24">
-      <ShopSection onViewAll={() => onViewChange('shop')} />
-    </section>
-
-    <section id="journal" className="py-24">
-      <JournalSection onViewAll={() => onViewChange('journal')} />
-    </section>
-
-    <section id="custom" className="py-24">
-      <CustomWorkSection />
-    </section>
-
-    <section id="about" className="py-24">
-      <AboutSection />
-    </section>
-  </div>
-);
-
-const FullPageLayout = ({ title, children, onViewChange }) => (
-  <div className="px-6 md:px-12 max-w-7xl mx-auto pt-40 pb-20 min-h-screen">
-    <button 
-      onClick={() => onViewChange('home')}
-      className="mb-8 flex items-center gap-2 text-[#A1A1AA] hover:text-[#D4AF37] transition-colors font-mono text-xs uppercase tracking-widest"
-    >
-      <ArrowLeft size={16} /> Back to Home
-    </button>
-    <FadeIn>
-      <h1 className="font-serif text-4xl text-[#D4AF37] mb-16 border-b border-[#D4AF37]/30 pb-6">
-        {title}
-      </h1>
-    </FadeIn>
-    {children}
-  </div>
-);
-
-// --- Main App ---
-
-const App = () => {
-  const [currentView, setCurrentView] = useState('home');
-
-  const handleViewChange = (view) => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    setCurrentView(view);
-  };
-
-  const renderView = () => {
-    switch (currentView) {
-      case 'home':
-        return <MainScrollLayout onViewChange={handleViewChange} />;
-      case 'artworks':
-        return (
-          <FullPageLayout title="Complete Artworks Archive" onViewChange={handleViewChange}>
-            <ArtworksSection isPreview={false} />
-          </FullPageLayout>
-        );
-      case 'experiments':
-        return (
-          <FullPageLayout title="Experimental Lab Results" onViewChange={handleViewChange}>
-            <ExperimentsSection isPreview={false} />
-          </FullPageLayout>
-        );
-      case 'shop':
-        return (
-          <FullPageLayout title="Shop Collection" onViewChange={handleViewChange}>
-            <ShopSection isPreview={false} />
-          </FullPageLayout>
-        );
-      case 'journal':
-        return (
-          <FullPageLayout title="Journal Entries" onViewChange={handleViewChange}>
-            <JournalSection isPreview={false} />
-          </FullPageLayout>
-        );
-      default:
-        return <MainScrollLayout onViewChange={handleViewChange} />;
-    }
-  };
-
-  return (
-    <div className="min-h-screen bg-[#121212] text-[#E5E0D8] selection:bg-[#D4AF37] selection:text-[#121212] font-sans">
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400;700&display=swap');
-        
-        .font-serif { font-family: 'Playfair Display', serif; }
-        .font-sans { font-family: 'Lato', sans-serif; }
-        
-        @keyframes fade-in-up {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS (Configured via CDN for simplicity) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        midnight: '#121212',
+                        gold: '#D4AF37',
+                        'gold-dim': 'rgba(212, 175, 55, 0.2)',
+                        'gold-glow': 'rgba(212, 175, 55, 0.1)',
+                        paper: '#E5E0D8',
+                        muted: '#A1A1AA',
+                        surface: '#1E1E1E',
+                        'surface-light': '#2A2A2A'
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Lato', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
         }
-        .animate-fade-in-up {
-          animation-name: fade-in-up;
-          animation-duration: 0.8s;
-          animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+    </script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* Custom scrollbar for Webkit browsers */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-      `}</style>
+        ::-webkit-scrollbar-track {
+            background: #121212; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #D4AF37; 
+        }
+        
+        .fade-hidden {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Smooth scrolling for the whole page */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="bg-midnight text-paper font-sans selection:bg-gold selection:text-midnight antialiased overflow-x-hidden">
 
-      <Navigation currentView={currentView} onViewChange={handleViewChange} />
-      
-      <main>
-        {renderView()}
-      </main>
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 w-full bg-midnight/95 backdrop-blur-md z-50 py-6 px-6 md:px-12 border-b border-gold-dim transition-all duration-500">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div onclick="navigateTo('home')" class="font-serif text-xl cursor-pointer tracking-wider text-gold hover:opacity-60 transition-opacity font-bold">
+                elara vance.
+            </div>
+            <ul class="flex flex-wrap justify-center gap-6 md:gap-8 text-sm font-light tracking-wide text-muted">
+                <li><button onclick="navigateTo('home')" class="nav-link hover:text-gold transition-colors duration-300 relative" data-target="home">Home</button></li>
+                <li><button onclick="navigateTo('artworks')" class="nav-link hover:text-gold transition-colors duration-300 relative" data-target="artworks">Artworks</button></li>
+                <li><button onclick="navigateTo('experiments')" class="nav-link hover:text-gold transition-colors duration-300 relative" data-target="experiments">Experiments</button></li>
+                <li><button onclick="navigateTo('shop')" class="nav-link hover:text-gold transition-colors duration-300 relative" data-target="shop">Shop</button></li>
+                <li><button onclick="navigateTo('journal')" class="nav-link hover:text-gold transition-colors duration-300 relative" data-target="journal">Journal</button></li>
+                <li><button onclick="navigateTo('custom')" class="nav-link hover:text-gold transition-colors duration-300 relative" data-target="custom">Custom Work</button></li>
+                <li><button onclick="navigateTo('about')" class="nav-link hover:text-gold transition-colors duration-300 relative" data-target="about">About</button></li>
+            </ul>
+        </div>
+    </nav>
 
-      <Footer />
-    </div>
-  );
-};
+    <!-- MAIN CONTENT AREA -->
+    <main class="pt-32 pb-20 px-6 md:px-12 max-w-7xl mx-auto min-h-screen">
+        
+        <!-- HOME VIEW (Scrollable Sections) -->
+        <div id="view-home" class="view-section block">
+            
+            <!-- Hero -->
+            <section id="home" class="min-h-[90vh] flex flex-col justify-center items-center text-center px-4 pt-10">
+                <div class="fade-entry">
+                    <h1 class="font-serif text-4xl md:text-6xl text-gold mb-8 leading-tight">
+                        Quiet observations <br /> of a loud world.
+                    </h1>
+                </div>
+                <div class="fade-entry" style="animation-delay: 200ms;">
+                    <p class="max-w-md mx-auto text-paper leading-loose font-light mb-10 text-lg">
+                        Welcome to my room. This is where I collect my thoughts, lines, and shadows. 
+                        There is no rush here. Take your time, look around, and breathe.
+                    </p>
+                </div>
+                <div class="fade-entry" style="animation-delay: 400ms;">
+                    <button onclick="scrollToSection('artworks')" class="group flex items-center gap-2 text-muted hover:text-gold transition-all duration-500 border-b border-transparent hover:border-gold pb-1">
+                        View the collection <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+                </div>
+            </section>
 
-export default App;
+            <div class="h-px bg-gold w-full max-w-2xl mx-auto my-12 opacity-30"></div>
+
+            <!-- Artworks Preview -->
+            <section id="artworks" class="py-24 max-w-6xl mx-auto">
+                <div class="flex justify-between items-baseline mb-12 fade-entry">
+                    <p class="font-serif text-2xl text-gold italic">Recent pieces.</p>
+                </div>
+                <div id="artworks-grid-preview" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
+                    <!-- Javascript will populate this -->
+                </div>
+                <div class="mt-16 text-center fade-entry">
+                    <button onclick="switchView('view-artworks-full')" class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted hover:text-gold border-b border-gold-dim hover:border-gold pb-1 transition-all">
+                        View Full Archive <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Experiments Preview -->
+            <section id="experiments" class="py-24 max-w-5xl mx-auto">
+                <div class="mb-16 fade-entry">
+                    <h2 class="font-serif text-3xl mb-4 text-gold">The Lab</h2>
+                    <p class="text-muted font-light leading-relaxed max-w-xl">
+                        Not everything has to be finished. This section is for the messy, the process, 
+                        the "what if" moments using clay, code, and fabric.
+                    </p>
+                </div>
+                <div id="experiments-grid-preview" class="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
+                    <!-- Javascript will populate this -->
+                </div>
+                <div class="mt-16 text-center fade-entry">
+                    <button onclick="switchView('view-experiments-full')" class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted hover:text-gold border-b border-gold-dim hover:border-gold pb-1 transition-all">
+                        See All Experiments <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Shop Preview -->
+            <section id="shop" class="py-24 max-w-5xl mx-auto">
+                <div class="mb-24">
+                    <div class="flex justify-between items-baseline mb-12 fade-entry">
+                        <h2 class="font-serif text-3xl text-gold">Collect</h2>
+                    </div>
+                    <div id="shop-grid-preview" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <!-- Javascript will populate this -->
+                    </div>
+                    <div class="mt-16 text-center fade-entry">
+                        <button onclick="switchView('view-shop-full')" class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted hover:text-gold border-b border-gold-dim hover:border-gold pb-1 transition-all">
+                            Browse Full Shop <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tools / Affiliate -->
+                <div class="border-t border-gold-dim pt-16 fade-entry">
+                    <h2 class="font-serif text-2xl mb-2 text-gold">Tools I Use</h2>
+                    <p class="text-muted font-light text-sm mb-8">Things that help me create. (Affiliate links)</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <a href="#" class="flex items-center p-4 border border-gold-dim hover:border-gold-dim transition-colors group bg-surface hover:bg-surface-light">
+                            <div class="p-3 bg-surface-light text-gold mr-4 rounded-full">
+                                <i data-lucide="book" class="w-4 h-4"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-serif text-gold">Moleskine Sketchbook</h4>
+                                <p class="text-xs text-muted uppercase tracking-wide">Planning</p>
+                            </div>
+                            <i data-lucide="arrow-right" class="ml-auto w-3.5 h-3.5 text-muted group-hover:text-gold transition-colors"></i>
+                        </a>
+                        <a href="#" class="flex items-center p-4 border border-gold-dim hover:border-gold-dim transition-colors group bg-surface hover:bg-surface-light">
+                            <div class="p-3 bg-surface-light text-gold mr-4 rounded-full">
+                                <i data-lucide="pen-tool" class="w-4 h-4"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-serif text-gold">Winsor & Newton Gouache</h4>
+                                <p class="text-xs text-muted uppercase tracking-wide">Painting</p>
+                            </div>
+                            <i data-lucide="arrow-right" class="ml-auto w-3.5 h-3.5 text-muted group-hover:text-gold transition-colors"></i>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Journal Preview -->
+            <section id="journal" class="py-24 max-w-2xl mx-auto">
+                <h2 class="font-serif text-3xl mb-12 text-gold fade-entry">Reflections</h2>
+                <div id="journal-list-preview" class="space-y-16">
+                    <!-- Javascript will populate this -->
+                </div>
+                <div class="mt-16 text-center fade-entry">
+                    <button onclick="switchView('view-journal-full')" class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted hover:text-gold border-b border-gold-dim hover:border-gold pb-1 transition-all">
+                        Read All Entries <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Custom Work -->
+            <section id="custom" class="py-24 max-w-xl mx-auto text-center">
+                <div class="fade-entry">
+                    <h2 class="font-serif text-3xl mb-6 text-gold">Commission a piece</h2>
+                    <p class="text-muted font-light leading-loose mb-10">
+                        I take on a very limited number of commissions per year to ensure I can give each piece the soul it deserves. 
+                        If you have a space that needs a quiet conversation piece, please fill out the request form below.
+                    </p>
+                    <div class="bg-surface p-12 border border-gold-dim rounded-sm">
+                        <p class="font-serif text-lg text-gold mb-6 italic">
+                            Ready to start the conversation?
+                        </p>
+                        <a href="https://docs.google.com/forms/" target="_blank" rel="noopener noreferrer" class="inline-block py-3 px-10 border border-gold bg-midnight text-gold hover:bg-gold hover:text-midnight transition-all duration-500 text-sm uppercase tracking-widest shadow-sm hover:shadow-md hover:shadow-gold-glow">
+                            Open Request Form
+                        </a>
+                        <p class="mt-4 text-xs text-muted font-mono">
+                            Opens in a new window via Google Forms
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About -->
+            <section id="about" class="py-24 max-w-4xl mx-auto flex flex-col md:flex-row gap-12 items-start">
+                <div class="w-full md:w-1/3 fade-entry">
+                    <div class="aspect-[3/4] bg-surface overflow-hidden border border-gold-dim">
+                        <img src="https://picsum.photos/seed/artist/800/1000" alt="Portrait" class="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 transition-opacity duration-700">
+                    </div>
+                </div>
+                <div class="w-full md:w-2/3 fade-entry" style="animation-delay: 200ms;">
+                    <h2 class="font-serif text-3xl mb-6 text-gold">It's nice to meet you.</h2>
+                    <div class="space-y-6 text-paper font-light leading-loose text-lg">
+                        <p>
+                            I am Elara. I am an artist based in the rainy hills of Oregon. 
+                            My work is primarily concerned with the things we usually ignore: 
+                            the texture of peeling paint, the silence after a bell rings, the color of moss.
+                        </p>
+                        <p>
+                            I believe art shouldn't shout. It should whisper. It should be a place where 
+                            you can rest your eyes and your mind.
+                        </p>
+                        <p>
+                            When I'm not painting, I'm usually drinking too much coffee, reading obscure 
+                            philosophy, or trying to keep my houseplants alive.
+                        </p>
+                    </div>
+                    <div class="mt-12 pt-12 border-t border-gold-dim">
+                        <p class="font-mono text-xs text-muted uppercase tracking-widest mb-6">Connect</p>
+                        <div class="flex gap-6">
+                            <a href="https://www.instagram.com/wigglenwow" target="_blank" rel="noopener noreferrer" class="text-muted hover:text-gold transition-colors"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                            <a href="https://www.youtube.com/@wigglenwow" target="_blank" rel="noopener noreferrer" class="text-muted hover:text-gold transition-colors"><i data-lucide="youtube" class="w-5 h-5"></i></a>
+                            <a href="mailto:akpnjani2@gmail.com" class="text-muted hover:text-gold transition-colors"><i data-lucide="mail" class="w-5 h-5"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- FULL PAGE VIEWS (Hidden by default) -->
+        
+        <!-- Artworks Full -->
+        <div id="view-artworks-full" class="view-section hidden pt-10">
+            <button onclick="switchView('view-home')" class="mb-8 flex items-center gap-2 text-muted hover:text-gold transition-colors font-mono text-xs uppercase tracking-widest">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Home
+            </button>
+            <h1 class="font-serif text-4xl text-gold mb-16 border-b border-gold-dim pb-6 fade-entry">Complete Artworks Archive</h1>
+            <div id="artworks-grid-full" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16"></div>
+        </div>
+
+        <!-- Experiments Full -->
+        <div id="view-experiments-full" class="view-section hidden pt-10">
+            <button onclick="switchView('view-home')" class="mb-8 flex items-center gap-2 text-muted hover:text-gold transition-colors font-mono text-xs uppercase tracking-widest">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Home
+            </button>
+            <h1 class="font-serif text-4xl text-gold mb-16 border-b border-gold-dim pb-6 fade-entry">Experimental Lab Results</h1>
+            <div id="experiments-grid-full" class="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8"></div>
+        </div>
+
+        <!-- Shop Full -->
+        <div id="view-shop-full" class="view-section hidden pt-10">
+            <button onclick="switchView('view-home')" class="mb-8 flex items-center gap-2 text-muted hover:text-gold transition-colors font-mono text-xs uppercase tracking-widest">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Home
+            </button>
+            <h1 class="font-serif text-4xl text-gold mb-16 border-b border-gold-dim pb-6 fade-entry">Shop Collection</h1>
+            <div id="shop-grid-full" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+        </div>
+
+        <!-- Journal Full -->
+        <div id="view-journal-full" class="view-section hidden pt-10">
+            <button onclick="switchView('view-home')" class="mb-8 flex items-center gap-2 text-muted hover:text-gold transition-colors font-mono text-xs uppercase tracking-widest">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Home
+            </button>
+            <h1 class="font-serif text-4xl text-gold mb-16 border-b border-gold-dim pb-6 fade-entry">Journal Archive</h1>
+            <div id="journal-list-full" class="space-y-16 max-w-2xl mx-auto"></div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-gold-dim text-center text-muted font-light text-xs tracking-widest uppercase">
+        <p>Designed with silence in mind.</p>
+        <p class="mt-2" id="year"></p>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- Data Generation ---
+        const generateItems = (count, category) => {
+            return Array.from({ length: count }, (_, i) => ({
+                id: i + 1,
+                title: `${category} No. ${i + 1}`,
+                year: 2020 + (i % 5),
+                type: ['Oil on Canvas', 'Charcoal', 'Digital', 'Mixed Media'][i % 4],
+                aspect: i % 3 === 0 ? 'aspect-[3/4]' : i % 3 === 1 ? 'aspect-square' : 'aspect-[4/3]',
+                price: 80 + (i * 10),
+                imageSeed: i + (category === 'Art' ? 100 : category === 'Exp' ? 500 : 800)
+            }));
+        };
+
+        const DATA = {
+            artworks: generateItems(50, 'Art'),
+            experiments: generateItems(40, 'Exp'),
+            shop: generateItems(30, 'Print'),
+            journal: Array.from({ length: 20 }, (_, i) => ({
+                id: i,
+                date: `Oct ${10 + i}, 2023`,
+                title: i === 0 ? 'The gentle art of doing nothing' : `Reflection ${i + 1}: On Time`,
+                preview: 'Why do we return to certain colors? For me, cobalt has always felt like a memory I can’t quite place. It is cold yet inviting, deep yet flat...'
+            }))
+        };
+
+        // --- Render Functions ---
+
+        function createArtworkCard(work, delay = 0) {
+            return `
+            <div class="fade-entry group cursor-pointer" style="animation-delay: ${delay}ms">
+                <div class="w-full ${work.aspect} bg-surface overflow-hidden relative mb-4 border border-gold-dim">
+                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-700 flex items-center justify-center text-gold z-10 opacity-0 group-hover:opacity-100">
+                        <span class="font-serif italic text-lg">View Detail</span>
+                    </div>
+                    <img src="https://picsum.photos/seed/${work.imageSeed}/800/1000" alt="${work.title}" loading="lazy" class="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000 ease-out">
+                </div>
+                <div class="flex justify-between items-baseline text-gold">
+                    <h3 class="font-serif text-xl">${work.title}</h3>
+                    <span class="font-mono text-xs text-muted">${work.year}</span>
+                </div>
+                <p class="text-sm font-light text-paper mt-1">${work.type}</p>
+            </div>
+            `;
+        }
+
+        function createExperimentCard(item, delay = 0) {
+            return `
+            <div class="break-inside-avoid mb-8 fade-entry" style="animation-delay: ${delay}ms">
+                <div class="bg-surface p-6 rounded-sm border border-gold-dim hover:border-gold transition-colors duration-500">
+                    <div class="aspect-video bg-surface-light w-full mb-4 overflow-hidden grayscale hover:grayscale-0 transition-all duration-700">
+                        <img src="https://picsum.photos/seed/${item.imageSeed}/600/400" loading="lazy" alt="Process" class="w-full h-full object-cover opacity-90">
+                    </div>
+                    <p class="font-mono text-xs text-muted mb-2">Exp. 0${item.id}</p>
+                    <p class="font-serif text-gold">Process study No. ${item.id}</p>
+                </div>
+            </div>
+            `;
+        }
+
+        function createShopCard(item, delay = 0) {
+            return `
+            <div class="fade-entry group" style="animation-delay: ${delay}ms">
+                <div class="aspect-square bg-surface mb-4 overflow-hidden border border-gold-dim">
+                    <img src="https://picsum.photos/seed/${item.imageSeed}/500/500" loading="lazy" alt="Print" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 opacity-90 group-hover:opacity-100">
+                </div>
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="font-serif text-lg text-gold">${item.title}</h3>
+                        <p class="text-xs text-muted mt-1 uppercase tracking-wider">Limited Print</p>
+                    </div>
+                    <span class="font-mono text-sm text-paper">$${item.price}</span>
+                </div>
+                <button class="mt-4 w-full py-2 border border-gold-dim text-muted text-xs uppercase tracking-widest hover:bg-gold hover:text-midnight transition-colors">
+                    Add to Cart
+                </button>
+            </div>
+            `;
+        }
+
+        function createJournalEntry(entry, delay = 0) {
+            return `
+            <article class="group cursor-pointer fade-entry" style="animation-delay: ${delay}ms">
+                <span class="font-mono text-xs text-muted mb-2 block">${entry.date}</span>
+                <h3 class="font-serif text-2xl text-gold mb-4 group-hover:text-paper transition-colors">
+                    ${entry.title}
+                </h3>
+                <p class="text-paper font-light leading-loose">
+                    ${entry.preview}
+                </p>
+                <span class="inline-block mt-4 text-xs uppercase tracking-widest text-muted border-b border-transparent group-hover:border-gold transition-all">
+                    Read Entry
+                </span>
+            </article>
+            `;
+        }
+
+        // --- Initialization ---
+
+        function init() {
+            // Render Previews
+            document.getElementById('artworks-grid-preview').innerHTML = DATA.artworks.slice(0, 6).map((w, i) => createArtworkCard(w, i * 100)).join('');
+            document.getElementById('experiments-grid-preview').innerHTML = DATA.experiments.slice(0, 4).map((w, i) => createExperimentCard(w, i * 100)).join('');
+            document.getElementById('shop-grid-preview').innerHTML = DATA.shop.slice(0, 3).map((w, i) => createShopCard(w, i * 100)).join('');
+            document.getElementById('journal-list-preview').innerHTML = DATA.journal.slice(0, 3).map((w, i) => createJournalEntry(w, i * 100)).join('');
+
+            // Render Full Lists
+            document.getElementById('artworks-grid-full').innerHTML = DATA.artworks.map(w => createArtworkCard(w)).join('');
+            document.getElementById('experiments-grid-full').innerHTML = DATA.experiments.map(w => createExperimentCard(w)).join('');
+            document.getElementById('shop-grid-full').innerHTML = DATA.shop.map(w => createShopCard(w)).join('');
+            document.getElementById('journal-list-full').innerHTML = DATA.journal.map(w => createJournalEntry(w)).join('');
+
+            // Set Year
+            document.getElementById('year').innerText = `© ${new Date().getFullYear()} Elara Vance`;
+
+            // Initialize Icons
+            lucide.createIcons();
+
+            // Setup Scroll Listener for Nav Active States
+            window.addEventListener('scroll', updateActiveNav);
+        }
+
+        // --- Navigation Logic ---
+
+        function updateActiveNav() {
+            const sections = ['home', 'artworks', 'experiments', 'shop', 'journal', 'custom', 'about'];
+            const scrollPos = window.scrollY + 250; 
+            
+            // Only update if we are in home view
+            if(document.getElementById('view-home').classList.contains('hidden')) {
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('text-gold', 'font-normal');
+                    link.classList.add('text-muted');
+                });
+                return;
+            }
+
+            sections.forEach(section => {
+                const el = document.getElementById(section);
+                if (el && el.offsetTop <= scrollPos && (el.offsetTop + el.offsetHeight) > scrollPos) {
+                    document.querySelectorAll('.nav-link').forEach(link => {
+                        if (link.dataset.target === section) {
+                            link.classList.add('text-gold', 'font-normal');
+                            link.classList.remove('text-muted');
+                            // Add underline effect
+                            link.classList.add('after:content-[""]', 'after:absolute', 'after:-bottom-1', 'after:left-0', 'after:w-full', 'after:h-px', 'after:bg-gold');
+                        } else {
+                            link.classList.remove('text-gold', 'font-normal', 'after:content-[""]', 'after:absolute', 'after:-bottom-1', 'after:left-0', 'after:w-full', 'after:h-px', 'after:bg-gold');
+                            link.classList.add('text-muted');
+                        }
+                    });
+                }
+            });
+        }
+
+        function switchView(viewId) {
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Hide all views
+            document.querySelectorAll('.view-section').forEach(el => {
+                el.classList.add('hidden');
+            });
+
+            // Show target view
+            const target = document.getElementById(viewId);
+            target.classList.remove('hidden');
+            target.classList.add('animate-fade-in-up'); // Re-trigger animation
+
+            // Update Icons (in case they need re-render)
+            lucide.createIcons();
+            
+            // Force nav update
+            if(viewId !== 'view-home') {
+                 document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('text-gold', 'after:bg-gold'));
+            }
+        }
+
+        function navigateTo(target) {
+            const homeView = document.getElementById('view-home');
+            
+            // If we are not on home view, go there first
+            if (homeView.classList.contains('hidden')) {
+                switchView('view-home');
+                // Wait for view switch then scroll
+                setTimeout(() => {
+                    const el = document.getElementById(target);
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            } else {
+                // Just scroll
+                const el = document.getElementById(target);
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+        
+        function scrollToSection(id) {
+            navigateTo(id);
+        }
+
+        // Run Init
+        window.addEventListener('DOMContentLoaded', init);
+
+    </script>
+</body>
+</html>
