@@ -1,302 +1,574 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WIGGLENWOW | Curated Finds for Creators & Students</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>">
-</head>
-<body>
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1 class="brand-title">WIGGLENWOW</h1>
-                <p class="tagline">Curated finds for creators, students, and everyday upgrades.</p>
-                <div class="cta-buttons">
-                    <a href="https://instagram.com/wigglenwow" target="_blank" class="btn btn-instagram">
-                        <i class="fab fa-instagram"></i> Instagram
-                    </a>
-                    <a href="https://youtube.com/@wigglenwow" target="_blank" class="btn btn-youtube">
-                        <i class="fab fa-youtube"></i> YouTube
-                    </a>
-                </div>
-            </div>
+import React, { useState, useEffect, useMemo } from 'react';
+import { Instagram, Mail, Youtube, ArrowRight, ExternalLink, PenTool, Coffee, Book, ArrowLeft } from 'lucide-react';
+
+// --- Data Generators ---
+
+const generateItems = (count, category) => {
+  return Array.from({ length: count }, (_, i) => ({
+    id: i + 1,
+    title: `${category} No. ${i + 1}`,
+    year: 2020 + (i % 5),
+    type: ['Oil on Canvas', 'Charcoal', 'Digital', 'Mixed Media'][i % 4],
+    aspect: i % 3 === 0 ? 'aspect-[3/4]' : i % 3 === 1 ? 'aspect-square' : 'aspect-[4/3]',
+    price: 80 + (i * 10),
+    imageSeed: i + (category === 'Art' ? 100 : category === 'Exp' ? 500 : 800)
+  }));
+};
+
+const DATA = {
+  artworks: generateItems(50, 'Art'),
+  experiments: generateItems(40, 'Exp'),
+  shop: generateItems(30, 'Print'),
+  journal: Array.from({ length: 20 }, (_, i) => ({
+    id: i,
+    date: `Oct ${10 + i}, 2023`,
+    title: i === 0 ? 'The gentle art of doing nothing' : `Reflection ${i + 1}: On Time`,
+    preview: 'Why do we return to certain colors? For me, cobalt has always felt like a memory I can’t quite place. It is cold yet inviting, deep yet flat...'
+  }))
+};
+
+// --- Components ---
+
+// 1. Navigation
+const Navigation = ({ currentView, onViewChange }) => {
+  const [activeSection, setActiveSection] = useState('home');
+
+  const handleNavClick = (id) => {
+    if (currentView !== 'home') {
+      onViewChange('home');
+      setTimeout(() => {
+        const element = document.getElementById(id);
+        if (element) element.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    } else {
+      const element = document.getElementById(id);
+      if (element) element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  useEffect(() => {
+    if (currentView !== 'home') {
+      setActiveSection('');
+      return;
+    }
+
+    const handleScroll = () => {
+      const sections = ['home', 'artworks', 'experiments', 'shop', 'journal', 'custom', 'about'];
+      const scrollPosition = window.scrollY + 200;
+
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element && element.offsetTop <= scrollPosition && (element.offsetTop + element.offsetHeight) > scrollPosition) {
+          setActiveSection(section);
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [currentView]);
+
+  const links = [
+    { id: 'home', label: 'Home' },
+    { id: 'artworks', label: 'Artworks' },
+    { id: 'experiments', label: 'Experiments' },
+    { id: 'shop', label: 'Shop' },
+    { id: 'journal', label: 'Journal' },
+    { id: 'custom', label: 'Custom Work' },
+    { id: 'about', label: 'About' },
+  ];
+
+  return (
+    <nav className="fixed top-0 left-0 w-full bg-[#121212]/95 backdrop-blur-md z-50 py-6 px-6 md:px-12 border-b border-[#D4AF37]/20 transition-all duration-500">
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+        <div 
+          onClick={() => handleNavClick('home')}
+          className="font-serif text-xl cursor-pointer tracking-wider text-[#D4AF37] hover:opacity-60 transition-opacity font-bold"
+        >
+          elara vance.
         </div>
-    </section>
+        <ul className="flex flex-wrap justify-center gap-6 md:gap-8 text-sm font-light tracking-wide text-[#A1A1AA]">
+          {links.map((link) => (
+            <li key={link.id}>
+              <button
+                onClick={() => handleNavClick(link.id)}
+                className={`hover:text-[#D4AF37] transition-colors duration-300 relative ${
+                  activeSection === link.id ? 'text-[#D4AF37] font-normal after:content-[""] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-px after:bg-[#D4AF37]' : ''
+                }`}
+              >
+                {link.label}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </nav>
+  );
+};
 
-    <!-- Social Profile Cards -->
-    <section class="social-cards-section">
-        <div class="container">
-            <h2 class="section-title">Find Me Online</h2>
-            <div class="social-cards">
-                <div class="social-card instagram-card">
-                    <div class="card-header">
-                        <div class="card-icon">
-                            <i class="fab fa-instagram"></i>
-                        </div>
-                        <div class="card-info">
-                            <h3>@wigglenwow</h3>
-                            <p class="card-description">Daily reels • Design • College life</p>
-                        </div>
-                    </div>
-                    <p class="card-stats"><span class="highlight">2.4K followers</span> • Active daily</p>
-                    <a href="https://instagram.com/wigglenwow" target="_blank" class="social-btn instagram-btn">
-                        <i class="fab fa-instagram"></i> Follow on Instagram
-                    </a>
-                </div>
+// 2. Footer
+const Footer = () => (
+  <footer className="py-12 mt-20 border-t border-[#D4AF37]/20 text-center text-[#71717A] font-light text-xs tracking-widest uppercase">
+    <p>Designed with silence in mind.</p>
+    <p className="mt-2">© {new Date().getFullYear()} Elara Vance</p>
+  </footer>
+);
 
-                <div class="social-card youtube-card">
-                    <div class="card-header">
-                        <div class="card-icon">
-                            <i class="fab fa-youtube"></i>
-                        </div>
-                        <div class="card-info">
-                            <h3>WIGGLENWOW</h3>
-                            <p class="card-description">Short edits, tutorials & experiments</p>
-                        </div>
-                    </div>
-                    <p class="card-stats"><span class="highlight">1.8K subscribers</span> • New weekly</p>
-                    <a href="https://youtube.com/@wigglenwow" target="_blank" class="social-btn youtube-btn">
-                        <i class="fab fa-youtube"></i> Watch on YouTube
-                    </a>
-                </div>
-            </div>
+// 3. FadeIn Wrapper
+const FadeIn = ({ children, delay = 0, className = "" }) => (
+  <div 
+    className={`animate-fade-in-up ${className}`} 
+    style={{ animationDelay: `${delay}ms`, animationFillMode: 'both' }}
+  >
+    {children}
+  </div>
+);
+
+// --- Section Components ---
+
+const HomeSection = ({ scrollToId }) => (
+  <div className="min-h-[90vh] flex flex-col justify-center items-center text-center px-4 pt-20">
+    <FadeIn>
+      <h1 className="font-serif text-4xl md:text-6xl text-[#D4AF37] mb-8 leading-tight">
+        Quiet observations <br /> of a loud world.
+      </h1>
+    </FadeIn>
+    <FadeIn delay={200}>
+      <p className="max-w-md mx-auto text-[#E5E0D8] leading-loose font-light mb-10 text-lg">
+        Welcome to my room. This is where I collect my thoughts, lines, and shadows. 
+        There is no rush here. Take your time, look around, and breathe.
+      </p>
+    </FadeIn>
+    <FadeIn delay={400}>
+      <button 
+        onClick={() => {
+          const el = document.getElementById(scrollToId);
+          if(el) el.scrollIntoView({ behavior: 'smooth' });
+        }}
+        className="group flex items-center gap-2 text-[#A1A1AA] hover:text-[#D4AF37] transition-all duration-500 border-b border-transparent hover:border-[#D4AF37] pb-1"
+      >
+        View the collection <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+      </button>
+    </FadeIn>
+  </div>
+);
+
+const ArtworksSection = ({ onViewAll, isPreview = true }) => {
+  const displayItems = isPreview ? DATA.artworks.slice(0, 6) : DATA.artworks;
+
+  return (
+    <div className="max-w-6xl mx-auto">
+      <FadeIn>
+        <div className="flex justify-between items-baseline mb-12">
+          <p className="font-serif text-2xl text-[#D4AF37] italic">
+            {isPreview ? "Recent pieces." : "Complete Archive."}
+          </p>
+          {!isPreview && <span className="font-mono text-xs text-[#71717A]">{displayItems.length} works</span>}
         </div>
-    </section>
+      </FadeIn>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
+        {displayItems.map((work, idx) => (
+          <FadeIn key={work.id} delay={(idx % 6) * 100}>
+            <div className="group cursor-pointer">
+              <div className={`w-full ${work.aspect} bg-[#1E1E1E] overflow-hidden relative mb-4 border border-[#D4AF37]/10`}>
+                <div className="absolute inset-0 bg-[#000000]/40 group-hover:bg-[#000000]/20 transition-colors duration-700 flex items-center justify-center text-[#D4AF37] z-10 opacity-0 group-hover:opacity-100">
+                   <span className="font-serif italic text-lg">View Detail</span>
+                </div>
+                <img 
+                   src={`https://picsum.photos/seed/${work.imageSeed}/800/1000`} 
+                   alt={work.title}
+                   className="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000 ease-out"
+                />
+              </div>
+              <div className="flex justify-between items-baseline text-[#D4AF37]">
+                <h3 className="font-serif text-xl">{work.title}</h3>
+                <span className="font-mono text-xs text-[#A1A1AA]">{work.year}</span>
+              </div>
+              <p className="text-sm font-light text-[#E5E0D8] mt-1">{work.type}</p>
+            </div>
+          </FadeIn>
+        ))}
+      </div>
 
-    <!-- Curated Affiliate Links -->
-    <section class="categories-section">
-        <div class="container">
-            <h2 class="section-title">My Curated Recommendations</h2>
-            <p class="section-subtitle">Products I actually use and love</p>
+      {isPreview && (
+        <FadeIn delay={400}>
+          <div className="mt-16 text-center">
+            <button 
+              onClick={onViewAll}
+              className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#A1A1AA] hover:text-[#D4AF37] border-b border-[#D4AF37]/30 hover:border-[#D4AF37] pb-1 transition-all"
+            >
+              View Full Archive ({DATA.artworks.length}) <ArrowRight size={14} />
+            </button>
+          </div>
+        </FadeIn>
+      )}
+    </div>
+  );
+};
+
+const ExperimentsSection = ({ onViewAll, isPreview = true }) => {
+  const displayItems = isPreview ? DATA.experiments.slice(0, 4) : DATA.experiments;
+
+  return (
+    <div className="max-w-5xl mx-auto">
+      <FadeIn>
+        <div className="mb-16">
+          <h2 className="font-serif text-3xl mb-4 text-[#D4AF37]">
+            {isPreview ? "The Lab" : "Experimental Archive"}
+          </h2>
+          <p className="text-[#E5E0D8] font-light leading-relaxed max-w-xl">
+            Not everything has to be finished. This section is for the messy, the process, 
+            the "what if" moments using clay, code, and fabric.
+          </p>
+        </div>
+      </FadeIn>
+
+      <div className={`columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8`}>
+        {displayItems.map((item, idx) => (
+           <FadeIn key={item.id} delay={(idx % 6) * 100}>
+             <div className="break-inside-avoid mb-8">
+                <div className="bg-[#1E1E1E] p-6 rounded-sm border border-[#D4AF37]/10 hover:border-[#D4AF37]/30 transition-colors duration-500">
+                  <div className="aspect-video bg-[#2A2A2A] w-full mb-4 overflow-hidden grayscale hover:grayscale-0 transition-all duration-700">
+                     <img src={`https://picsum.photos/seed/${item.imageSeed}/600/400`} alt="Process" className="w-full h-full object-cover mix-blend-multiply opacity-90" />
+                  </div>
+                  <p className="font-mono text-xs text-[#71717A] mb-2">Exp. 0{item.id}</p>
+                  <p className="font-serif text-[#D4AF37]">Process study No. {item.id}</p>
+                </div>
+             </div>
+           </FadeIn>
+        ))}
+      </div>
+
+      {isPreview && (
+        <FadeIn delay={400}>
+          <div className="mt-16 text-center">
+            <button 
+              onClick={onViewAll}
+              className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#A1A1AA] hover:text-[#D4AF37] border-b border-[#D4AF37]/30 hover:border-[#D4AF37] pb-1 transition-all"
+            >
+              See All Experiments ({DATA.experiments.length}) <ArrowRight size={14} />
+            </button>
+          </div>
+        </FadeIn>
+      )}
+    </div>
+  );
+};
+
+const ShopSection = ({ onViewAll, isPreview = true }) => {
+  const displayItems = isPreview ? DATA.shop.slice(0, 3) : DATA.shop;
+  const tools = [
+    { name: 'Moleskine Sketchbook', category: 'Planning', link: '#' },
+    { name: 'Winsor & Newton Gouache', category: 'Painting', link: '#' },
+    { name: 'Sony A7III', category: 'Photography', link: '#' },
+  ];
+
+  return (
+    <div className="max-w-5xl mx-auto">
+      <section className="mb-24">
+        <FadeIn>
+          <div className="flex justify-between items-baseline mb-12">
+            <h2 className="font-serif text-3xl text-[#D4AF37]">{isPreview ? "Collect" : "Shop All Prints"}</h2>
+          </div>
+        </FadeIn>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {displayItems.map((item, idx) => (
+            <FadeIn key={item.id} delay={(idx % 6) * 100}>
+              <div className="group">
+                <div className="aspect-square bg-[#1E1E1E] mb-4 overflow-hidden border border-[#D4AF37]/10">
+                   <img src={`https://picsum.photos/seed/${item.imageSeed}/500/500`} alt="Print" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 opacity-90 group-hover:opacity-100" />
+                </div>
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h3 className="font-serif text-lg text-[#D4AF37]">{item.title}</h3>
+                    <p className="text-xs text-[#A1A1AA] mt-1 uppercase tracking-wider">Limited Print</p>
+                  </div>
+                  <span className="font-mono text-sm text-[#E5E0D8]">${item.price}</span>
+                </div>
+                <button className="mt-4 w-full py-2 border border-[#D4AF37]/30 text-[#A1A1AA] text-xs uppercase tracking-widest hover:bg-[#D4AF37] hover:text-[#121212] transition-colors">
+                  Add to Cart
+                </button>
+              </div>
+            </FadeIn>
+          ))}
+        </div>
+
+        {isPreview && (
+          <FadeIn delay={300}>
+            <div className="mt-16 text-center">
+              <button 
+                onClick={onViewAll}
+                className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#A1A1AA] hover:text-[#D4AF37] border-b border-[#D4AF37]/30 hover:border-[#D4AF37] pb-1 transition-all"
+              >
+                Browse Full Shop ({DATA.shop.length}) <ArrowRight size={14} />
+              </button>
+            </div>
+          </FadeIn>
+        )}
+      </section>
+
+      {isPreview && (
+        <section className="border-t border-[#D4AF37]/20 pt-16">
+          <FadeIn>
+            <h2 className="font-serif text-2xl mb-2 text-[#D4AF37]">Tools I Use</h2>
+            <p className="text-[#A1A1AA] font-light text-sm mb-8">Things that help me create. (Affiliate links)</p>
             
-            <div class="categories-grid">
-                <!-- Creator Gear -->
-                <div class="category-card" data-category="creator">
-                    <div class="category-header">
-                        <span class="category-icon">🎧</span>
-                        <h3>Creator Gear</h3>
-                        <span class="category-count">5 items</span>
-                    </div>
-                    <div class="category-content">
-                        <div class="product-list">
-                            <a href="#" target="_blank" class="product-link">
-                                <div class="product-info">
-                                    <h4>Blue Yeti Microphone</h4>
-                                    <p class="product-description">Crystal clear audio for streaming & recording</p>
-                                </div>
-                                <div class="product-tags">
-                                    <span class="badge personal-pick">⭐ Personal pick</span>
-                                    <span class="badge daily-use">🎯 I use this daily</span>
-                                </div>
-                            </a>
-                            
-                            <a href="#" target="_blank" class="product-link">
-                                <div class="product-info">
-                                    <h4>Logitech C920 Webcam</h4>
-                                    <p class="product-description">1080p HD for crisp video calls</p>
-                                </div>
-                                <div class="product-tags">
-                                    <span class="badge best-value">💰 Best value</span>
-                                </div>
-                            </a>
-                            
-                            <a href="#" target="_blank" class="product-link">
-                                <div class="product-info">
-                                    <h4>Elgato Key Light</h4>
-                                    <p class="product-description">Professional studio lighting</p>
-                                </div>
-                                <div class="product-tags">
-                                    <span class="badge most-clicked">🔥 Most clicked</span>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Study Essentials -->
-                <div class="category-card" data-category="study">
-                    <div class="category-header">
-                        <span class="category-icon">💻</span>
-                        <h3>Study Essentials</h3>
-                        <span class="category-count">4 items</span>
-                    </div>
-                    <div class="category-content">
-                        <div class="product-list">
-                            <a href="#" target="_blank" class="product-link">
-                                <div class="product-info">
-                                    <h4>iPad Air with Apple Pencil</h4>
-                                    <p class="product-description">Perfect for note-taking & digital art</p>
-                                </div>
-                                <div class="product-tags">
-                                    <span class="badge personal-pick">⭐ Personal pick</span>
-                                    <span class="badge recently-added">🆕 Recently added</span>
-                                </div>
-                            </a>
-                            
-                            <a href="#" target="_blank" class="product-link">
-                                <div class="product-info">
-                                    <h4>Remarkable 2 Tablet</h4>
-                                    <p class="product-description">Paper-like writing experience</p>
-                                </div>
-                                <div class="product-tags">
-                                    <span class="badge great-beginners">👶 Great for beginners</span>
-                                </div>
-                            </a>
-                            
-                            <a href="#" target="_blank" class="product-link">
-                                <div class="product-info">
-                                    <h4>Bose Noise Cancelling Headphones</h4>
-                                    <p class="product-description">Focus in any environment</p>
-                                </div>
-                                <div class="product-tags">
-                                    <span class="badge most-clicked">🔥 Most clicked</span>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Daily Use Tech -->
-                <div class="category-card" data-category="tech">
-                    <div class="category-header">
-                        <span class="category-icon">📱</span>
-                        <h3>Daily Use Tech</h3>
-                        <span class="category-count">3 items</span>
-                    </div>
-                    <div class="category-content">
-                        <div class="product-list">
-                            <a href="#" target="_blank" class="product-link">
-                                <div class="product-info">
-                                    <h4>Anker Power Bank</h4>
-                                    <p class="product-description">Fast charging on the go</p>
-                                </div>
-                                <div class="product-tags">
-                                    <span class="badge best-value">💰 Best value</span>
-                                    <span class="badge daily-use">🎯 I use this daily</span>
-                                </div>
-                            </a>
-                            
-                            <a href="#" target="_blank" class="product-link">
-                                <div class="product-info">
-                                    <h4>Apple AirTag 4-pack</h4>
-                                    <p class="product-description">Never lose your things again</p>
-                                </div>
-                                <div class="product-tags">
-                                    <span class="badge great-beginners">👶 Great for beginners</span>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Cool Finds -->
-                <div class="category-card" data-category="finds">
-                    <div class="category-header">
-                        <span class="category-icon">🎁</span>
-                        <h3>Cool Finds</h3>
-                        <span class="category-count">3 items</span>
-                    </div>
-                    <div class="category-content">
-                        <div class="product-list">
-                            <a href="#" target="_blank" class="product-link">
-                                <div class="product-info">
-                                    <h4>Nanoleaf Light Panels</h4>
-                                    <p class="product-description">Smart lighting for your setup</p>
-                                </div>
-                                <div class="product-tags">
-                                    <span class="badge recently-added">🆕 Recently added</span>
-                                </div>
-                            </a>
-                            
-                            <a href="#" target="_blank" class="product-link">
-                                <div class="product-info">
-                                    <h4>Fujifilm Instax Mini</h4>
-                                    <p class="product-description">Instant photo fun</p>
-                                </div>
-                                <div class="product-tags">
-                                    <span class="badge personal-pick">⭐ Personal pick</span>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {tools.map((tool, idx) => (
+                <a key={idx} href={tool.link} className="flex items-center p-4 border border-[#D4AF37]/20 hover:border-[#D4AF37]/50 transition-colors group bg-[#1E1E1E]">
+                  <div className="p-3 bg-[#2A2A2A] text-[#D4AF37] mr-4 rounded-full group-hover:bg-[#D4AF37] group-hover:text-[#121212] transition-colors">
+                     {idx === 0 ? <Book size={18}/> : idx === 1 ? <PenTool size={18}/> : <ExternalLink size={18}/>}
+                  </div>
+                  <div>
+                    <h4 className="font-serif text-[#D4AF37]">{tool.name}</h4>
+                    <p className="text-xs text-[#A1A1AA] uppercase tracking-wide">{tool.category}</p>
+                  </div>
+                  <ArrowRight size={14} className="ml-auto text-[#71717A] group-hover:text-[#D4AF37] transition-colors" />
+                </a>
+              ))}
             </div>
-            
-            <!-- Weekly Highlight -->
-            <div class="weekly-highlight">
-                <div class="highlight-badge">🔥 Most Clicked This Week</div>
-                <div class="highlight-product">
-                    <h4>Blue Yeti Microphone</h4>
-                    <p>Over 200 clicks this week! Perfect for podcasting and streaming.</p>
-                    <a href="#" target="_blank" class="highlight-btn">Check it out →</a>
-                </div>
-            </div>
+          </FadeIn>
+        </section>
+      )}
+    </div>
+  );
+};
+
+const JournalSection = ({ onViewAll, isPreview = true }) => {
+  const displayItems = isPreview ? DATA.journal.slice(0, 3) : DATA.journal;
+
+  return (
+    <div className="max-w-2xl mx-auto">
+      <FadeIn>
+        <h2 className="font-serif text-3xl mb-12 text-[#D4AF37]">{isPreview ? "Reflections" : "Journal Archive"}</h2>
+      </FadeIn>
+      <div className="space-y-16">
+        {displayItems.map((entry, idx) => (
+          <FadeIn key={entry.id} delay={(idx % 6) * 100}>
+            <article className="group cursor-pointer">
+              <span className="font-mono text-xs text-[#71717A] mb-2 block">{entry.date}</span>
+              <h3 className="font-serif text-2xl text-[#D4AF37] mb-4 group-hover:text-[#F0E6D2] transition-colors">
+                {entry.title}
+              </h3>
+              <p className="text-[#E5E0D8] font-light leading-loose">
+                {entry.preview}
+              </p>
+              <span className="inline-block mt-4 text-xs uppercase tracking-widest text-[#A1A1AA] border-b border-transparent group-hover:border-[#D4AF37] transition-all">
+                Read Entry
+              </span>
+            </article>
+          </FadeIn>
+        ))}
+      </div>
+      
+      {isPreview && (
+        <FadeIn delay={300}>
+          <div className="mt-16 text-center">
+            <button 
+              onClick={onViewAll}
+              className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#A1A1AA] hover:text-[#D4AF37] border-b border-[#D4AF37]/30 hover:border-[#D4AF37] pb-1 transition-all"
+            >
+              Read All Entries ({DATA.journal.length}) <ArrowRight size={14} />
+            </button>
+          </div>
+        </FadeIn>
+      )}
+    </div>
+  );
+};
+
+const CustomWorkSection = () => (
+  <div className="max-w-xl mx-auto text-center">
+    <FadeIn>
+      <h2 className="font-serif text-3xl mb-6 text-[#D4AF37]">Commission a piece</h2>
+      <p className="text-[#E5E0D8] font-light leading-loose mb-10">
+        I take on a very limited number of commissions per year to ensure I can give each piece the soul it deserves. 
+        If you have a space that needs a quiet conversation piece, please fill out the request form below.
+      </p>
+
+      {/* Google Form Placeholder / Link */}
+      <div className="bg-[#1E1E1E] p-12 border border-[#D4AF37]/20 rounded-sm">
+        <p className="font-serif text-lg text-[#D4AF37] mb-6 italic">
+          Ready to start the conversation?
+        </p>
+        <a 
+          href="https://docs.google.com/forms/" // Replace with actual Google Form Link
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block py-3 px-10 border border-[#D4AF37] bg-[#121212] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#121212] transition-all duration-500 text-sm uppercase tracking-widest shadow-sm hover:shadow-md hover:shadow-[#D4AF37]/20"
+        >
+          Open Request Form
+        </a>
+        <p className="mt-4 text-xs text-[#71717A] font-mono">
+          Opens in a new window via Google Forms
+        </p>
+      </div>
+    </FadeIn>
+  </div>
+);
+
+const AboutSection = () => (
+  <div className="max-w-4xl mx-auto flex flex-col md:flex-row gap-12 items-start">
+    <FadeIn className="w-full md:w-1/3">
+      <div className="aspect-[3/4] bg-[#1E1E1E] overflow-hidden border border-[#D4AF37]/20">
+        <img src="https://picsum.photos/seed/artist/800/1000" alt="Portrait" className="w-full h-full object-cover grayscale opacity-80" />
+      </div>
+    </FadeIn>
+    <FadeIn delay={200} className="w-full md:w-2/3">
+      <h2 className="font-serif text-3xl mb-6 text-[#D4AF37]">It's nice to meet you.</h2>
+      <div className="space-y-6 text-[#E5E0D8] font-light leading-loose text-lg">
+        <p>
+          I am Elara. I am an artist based in the rainy hills of Oregon. 
+          My work is primarily concerned with the things we usually ignore: 
+          the texture of peeling paint, the silence after a bell rings, the color of moss.
+        </p>
+        <p>
+          I believe art shouldn't shout. It should whisper. It should be a place where 
+          you can rest your eyes and your mind.
+        </p>
+        <p>
+          When I'm not painting, I'm usually drinking too much coffee, reading obscure 
+          philosophy, or trying to keep my houseplants alive.
+        </p>
+      </div>
+
+      <div className="mt-12 pt-12 border-t border-[#D4AF37]/20">
+        <p className="font-mono text-xs text-[#71717A] uppercase tracking-widest mb-6">Connect</p>
+        <div className="flex gap-6">
+          <a href="https://www.instagram.com/wigglenwow" target="_blank" rel="noopener noreferrer" className="text-[#A1A1AA] hover:text-[#D4AF37] transition-colors"><Instagram size={20} strokeWidth={1.5} /></a>
+          <a href="https://www.youtube.com/@wigglenwow" target="_blank" rel="noopener noreferrer" className="text-[#A1A1AA] hover:text-[#D4AF37] transition-colors"><Youtube size={20} strokeWidth={1.5} /></a>
+          <a href="mailto:akpnjani2@gmail.com" className="text-[#A1A1AA] hover:text-[#D4AF37] transition-colors"><Mail size={20} strokeWidth={1.5} /></a>
         </div>
+      </div>
+    </FadeIn>
+  </div>
+);
+
+// --- Layouts ---
+
+const MainScrollLayout = ({ onViewChange }) => (
+  <div className="px-6 md:px-12 max-w-7xl mx-auto">
+    <section id="home">
+      <HomeSection scrollToId="artworks" />
+    </section>
+    
+    <div className="h-px bg-[#D4AF37] w-full max-w-2xl mx-auto my-12 opacity-30"></div>
+
+    <section id="artworks" className="py-24">
+      <ArtworksSection onViewAll={() => onViewChange('artworks')} />
     </section>
 
-    <!-- Trust Section -->
-    <section class="trust-section">
-        <div class="container">
-            <div class="trust-content">
-                <div class="trust-icon">🤝</div>
-                <h2 class="trust-title">Why Trust My Recommendations?</h2>
-                <p class="trust-statement">
-                    I only share products I've personally used or genuinely recommend. 
-                    Every item here has been tested by me. No random spam links — just 
-                    honest reviews from a fellow creator and student.
-                </p>
-                <div class="trust-principles">
-                    <div class="principle">
-                        <span class="principle-icon">✓</span>
-                        <span>Hands-on testing</span>
-                    </div>
-                    <div class="principle">
-                        <span class="principle-icon">✓</span>
-                        <span>No sponsored placements</span>
-                    </div>
-                    <div class="principle">
-                        <span class="principle-icon">✓</span>
-                        <span>Updated regularly</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <section id="experiments" className="py-24">
+      <ExperimentsSection onViewAll={() => onViewChange('experiments')} />
     </section>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-social">
-                    <a href="https://instagram.com/wigglenwow" target="_blank" class="footer-social-link">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="https://youtube.com/@wigglenwow" target="_blank" class="footer-social-link">
-                        <i class="fab fa-youtube"></i>
-                    </a>
-                </div>
-                
-                <div class="footer-brand">
-                    <h3 class="footer-title">WIGGLENWOW</h3>
-                    <p class="footer-tagline">Built by me • Curated with care</p>
-                </div>
-                
-                <div class="footer-notes">
-                    <p class="disclaimer">
-                        Some links are affiliate links. I may earn a small commission at no extra cost to you.
-                        This helps support my content creation. Thank you for your support! 💜
-                    </p>
-                    <p class="copyright">© 2024 WIGGLENWOW. All recommendations are my own.</p>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <section id="shop" className="py-24">
+      <ShopSection onViewAll={() => onViewChange('shop')} />
+    </section>
 
-    <script src="script.js"></script>
-</body>
-</html>
+    <section id="journal" className="py-24">
+      <JournalSection onViewAll={() => onViewChange('journal')} />
+    </section>
+
+    <section id="custom" className="py-24">
+      <CustomWorkSection />
+    </section>
+
+    <section id="about" className="py-24">
+      <AboutSection />
+    </section>
+  </div>
+);
+
+const FullPageLayout = ({ title, children, onViewChange }) => (
+  <div className="px-6 md:px-12 max-w-7xl mx-auto pt-40 pb-20 min-h-screen">
+    <button 
+      onClick={() => onViewChange('home')}
+      className="mb-8 flex items-center gap-2 text-[#A1A1AA] hover:text-[#D4AF37] transition-colors font-mono text-xs uppercase tracking-widest"
+    >
+      <ArrowLeft size={16} /> Back to Home
+    </button>
+    <FadeIn>
+      <h1 className="font-serif text-4xl text-[#D4AF37] mb-16 border-b border-[#D4AF37]/30 pb-6">
+        {title}
+      </h1>
+    </FadeIn>
+    {children}
+  </div>
+);
+
+// --- Main App ---
+
+const App = () => {
+  const [currentView, setCurrentView] = useState('home');
+
+  const handleViewChange = (view) => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setCurrentView(view);
+  };
+
+  const renderView = () => {
+    switch (currentView) {
+      case 'home':
+        return <MainScrollLayout onViewChange={handleViewChange} />;
+      case 'artworks':
+        return (
+          <FullPageLayout title="Complete Artworks Archive" onViewChange={handleViewChange}>
+            <ArtworksSection isPreview={false} />
+          </FullPageLayout>
+        );
+      case 'experiments':
+        return (
+          <FullPageLayout title="Experimental Lab Results" onViewChange={handleViewChange}>
+            <ExperimentsSection isPreview={false} />
+          </FullPageLayout>
+        );
+      case 'shop':
+        return (
+          <FullPageLayout title="Shop Collection" onViewChange={handleViewChange}>
+            <ShopSection isPreview={false} />
+          </FullPageLayout>
+        );
+      case 'journal':
+        return (
+          <FullPageLayout title="Journal Entries" onViewChange={handleViewChange}>
+            <JournalSection isPreview={false} />
+          </FullPageLayout>
+        );
+      default:
+        return <MainScrollLayout onViewChange={handleViewChange} />;
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-[#121212] text-[#E5E0D8] selection:bg-[#D4AF37] selection:text-[#121212] font-sans">
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400;700&display=swap');
+        
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-sans { font-family: 'Lato', sans-serif; }
+        
+        @keyframes fade-in-up {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up {
+          animation-name: fade-in-up;
+          animation-duration: 0.8s;
+          animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+      `}</style>
+
+      <Navigation currentView={currentView} onViewChange={handleViewChange} />
+      
+      <main>
+        {renderView()}
+      </main>
+
+      <Footer />
+    </div>
+  );
+};
+
+export default App;
