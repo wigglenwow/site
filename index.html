@@ -6,12 +6,12 @@
     <title>WigglenWow | Portfolio</title>
     
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="[https://fonts.googleapis.com](https://fonts.googleapis.com)">
+    <link rel="preconnect" href="[https://fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
+    <link href="[https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap](https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap)" rel="stylesheet">
     
     <!-- Tailwind CSS (Configured via CDN for simplicity) -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -45,39 +45,10 @@
     </script>
 
     <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="[https://unpkg.com/lucide@latest](https://unpkg.com/lucide@latest)"></script>
 
-    <style>
-        /* Custom scrollbar for Webkit browsers */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #121212; 
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #333; 
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #D4AF37; 
-        }
-        
-        .fade-hidden {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        .fade-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        /* Smooth scrolling for the whole page */
-        html {
-            scroll-behavior: smooth;
-        }
-    </style>
+    <!-- Linking to your separate CSS file -->
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="bg-midnight text-paper font-sans selection:bg-gold selection:text-midnight antialiased overflow-x-hidden">
 
@@ -92,7 +63,6 @@
                 <li><button onclick="navigateTo('artworks')" class="nav-link hover:text-gold transition-colors duration-300 relative" data-target="artworks">Artworks</button></li>
                 <li><button onclick="navigateTo('experiments')" class="nav-link hover:text-gold transition-colors duration-300 relative" data-target="experiments">Experiments</button></li>
                 <li><button onclick="navigateTo('shop')" class="nav-link hover:text-gold transition-colors duration-300 relative" data-target="shop">Shop</button></li>
-                <li><button onclick="navigateTo('journal')" class="nav-link hover:text-gold transition-colors duration-300 relative" data-target="journal">Journal</button></li>
                 <li><button onclick="navigateTo('custom')" class="nav-link hover:text-gold transition-colors duration-300 relative" data-target="custom">Custom Work</button></li>
                 <li><button onclick="navigateTo('about')" class="nav-link hover:text-gold transition-colors duration-300 relative" data-target="about">About</button></li>
             </ul>
@@ -204,20 +174,47 @@
                             </div>
                             <i data-lucide="arrow-right" class="ml-auto w-3.5 h-3.5 text-muted group-hover:text-gold transition-colors"></i>
                         </a>
+                        <a href="#" class="flex items-center p-4 border border-gold-dim hover:border-gold-dim transition-colors group bg-surface hover:bg-surface-light">
+                            <div class="p-3 bg-surface-light text-gold mr-4 rounded-full">
+                                <i data-lucide="edit-2" class="w-4 h-4"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-serif text-gold">Coates Willow Charcoal</h4>
+                                <p class="text-xs text-muted uppercase tracking-wide">Drafting & Shading</p>
+                            </div>
+                            <i data-lucide="arrow-right" class="ml-auto w-3.5 h-3.5 text-muted group-hover:text-gold transition-colors"></i>
+                        </a>
+                        <a href="#" class="flex items-center p-4 border border-gold-dim hover:border-gold-dim transition-colors group bg-surface hover:bg-surface-light">
+                            <div class="p-3 bg-surface-light text-gold mr-4 rounded-full">
+                                <i data-lucide="droplet" class="w-4 h-4"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-serif text-gold">Schmincke Watercolors</h4>
+                                <p class="text-xs text-muted uppercase tracking-wide">Washes & Details</p>
+                            </div>
+                            <i data-lucide="arrow-right" class="ml-auto w-3.5 h-3.5 text-muted group-hover:text-gold transition-colors"></i>
+                        </a>
+                        <a href="#" class="flex items-center p-4 border border-gold-dim hover:border-gold-dim transition-colors group bg-surface hover:bg-surface-light">
+                            <div class="p-3 bg-surface-light text-gold mr-4 rounded-full">
+                                <i data-lucide="sun" class="w-4 h-4"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-serif text-gold">Daylight Studio Lamp</h4>
+                                <p class="text-xs text-muted uppercase tracking-wide">Workspace</p>
+                            </div>
+                            <i data-lucide="arrow-right" class="ml-auto w-3.5 h-3.5 text-muted group-hover:text-gold transition-colors"></i>
+                        </a>
+                        <a href="#" class="flex items-center p-4 border border-gold-dim hover:border-gold-dim transition-colors group bg-surface hover:bg-surface-light">
+                            <div class="p-3 bg-surface-light text-gold mr-4 rounded-full">
+                                <i data-lucide="coffee" class="w-4 h-4"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-serif text-gold">Ceramic Palette & Mug</h4>
+                                <p class="text-xs text-muted uppercase tracking-wide">Essentials</p>
+                            </div>
+                            <i data-lucide="arrow-right" class="ml-auto w-3.5 h-3.5 text-muted group-hover:text-gold transition-colors"></i>
+                        </a>
                     </div>
-                </div>
-            </section>
-
-            <!-- Journal Preview -->
-            <section id="journal" class="py-24 max-w-2xl mx-auto">
-                <h2 class="font-serif text-3xl mb-12 text-gold fade-entry">Reflections</h2>
-                <div id="journal-list-preview" class="space-y-16">
-                    <!-- Javascript will populate this -->
-                </div>
-                <div class="mt-16 text-center fade-entry">
-                    <button onclick="switchView('view-journal-full')" class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted hover:text-gold border-b border-gold-dim hover:border-gold pb-1 transition-all">
-                        Read All Entries <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
-                    </button>
                 </div>
             </section>
 
@@ -234,7 +231,7 @@
                         <p class="font-serif text-lg text-gold mb-6 italic">
                             Ready to start the conversation?
                         </p>
-                        <a href="https://docs.google.com/forms/" target="_blank" rel="noopener noreferrer" class="inline-block py-3 px-10 border border-gold bg-midnight text-gold hover:bg-gold hover:text-midnight transition-all duration-500 text-sm uppercase tracking-widest shadow-sm hover:shadow-md hover:shadow-gold-glow">
+                        <a href="[https://docs.google.com/forms/](https://docs.google.com/forms/)" target="_blank" rel="noopener noreferrer" class="inline-block py-3 px-10 border border-gold bg-midnight text-gold hover:bg-gold hover:text-midnight transition-all duration-500 text-sm uppercase tracking-widest shadow-sm hover:shadow-md hover:shadow-gold-glow">
                             Open Request Form
                         </a>
                         <p class="mt-4 text-xs text-muted font-mono">
@@ -248,34 +245,45 @@
             <section id="about" class="py-24 max-w-4xl mx-auto flex flex-col md:flex-row gap-12 items-start">
                 <div class="w-full md:w-1/3 fade-entry">
                     <div class="aspect-[3/4] bg-surface overflow-hidden border border-gold-dim">
-                        <img src="https://picsum.photos/seed/artist/800/1000" alt="Portrait" class="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 transition-opacity duration-700">
+                        <img src="[https://picsum.photos/seed/artist/800/1000](https://picsum.photos/seed/artist/800/1000)" alt="Portrait" class="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 transition-opacity duration-700">
                     </div>
                 </div>
                 <div class="w-full md:w-2/3 fade-entry" style="animation-delay: 200ms;">
                     <h2 class="font-serif text-3xl mb-6 text-gold">I Hope it felt Calm.</h2>
                     <div class="space-y-6 text-paper font-light leading-loose text-lg">
                         <p>
-                            I am Aryan. I am an artist from the ancient city of Nalanda. 
-                            My work is primarily concerned with trying out new media while continuously upgrading my skills and patience: 
-                            I believe in keeping creativity alive in whatever you do, whether art or mathematics.
+                            I am Elara. I am an artist based in the rainy hills of Oregon. 
+                            My work is primarily concerned with the things we usually ignore: 
+                            the texture of peeling paint, the silence after a bell rings, the color of moss.
                         </p>
                         <p>
                             I believe art shouldn't shout. It should whisper. It should be a place where 
-                            You can rest your eyes and your mind.
+                            you can rest your eyes and your mind.
                         </p>
                         <p>
-                            When I'm not painting, I'm usually doing mathematics, thinking about 
-                            philosophy, filming, or trying to debate or hang out with friends.
+                            When I'm not painting, I'm usually drinking too much coffee, reading obscure 
+                            philosophy, or trying to keep my houseplants alive.
                         </p>
                     </div>
                     <div class="mt-12 pt-12 border-t border-gold-dim">
                         <p class="font-mono text-xs text-muted uppercase tracking-widest mb-6">Connect</p>
                         <div class="flex gap-6">
-                            <a href="https://www.instagram.com/wigglenwow" target="_blank" rel="noopener noreferrer" class="text-muted hover:text-gold transition-colors"><i data-lucide="instagram" class="w-5 h-5"></i></a>
-                            <a href="https://www.youtube.com/@wigglenwow" target="_blank" rel="noopener noreferrer" class="text-muted hover:text-gold transition-colors"><i data-lucide="youtube" class="w-5 h-5"></i></a>
+                            <a href="[https://www.instagram.com/wigglenwow](https://www.instagram.com/wigglenwow)" target="_blank" rel="noopener noreferrer" class="text-muted hover:text-gold transition-colors"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                            <a href="[https://www.youtube.com/@wigglenwow](https://www.youtube.com/@wigglenwow)" target="_blank" rel="noopener noreferrer" class="text-muted hover:text-gold transition-colors"><i data-lucide="youtube" class="w-5 h-5"></i></a>
                             <a href="mailto:akpnjani2@gmail.com" class="text-muted hover:text-gold transition-colors"><i data-lucide="mail" class="w-5 h-5"></i></a>
                         </div>
                     </div>
+                </div>
+            </section>
+
+            <!-- Thoughts -->
+            <section id="thoughts" class="py-24 max-w-4xl mx-auto">
+                <div class="fade-entry bg-surface p-10 md:p-16 border border-gold-dim relative">
+                    <i data-lucide="quote" class="w-10 h-10 text-gold-dim absolute top-6 left-6 opacity-40"></i>
+                    <h2 class="font-serif text-2xl mb-6 text-gold text-center relative z-10">A Current Thought</h2>
+                    <p class="text-paper font-light leading-loose text-lg italic text-center relative z-10">
+                        "I've been thinking a lot about the spaces between things lately. Not the objects themselves, but the air around them. How silence isn't empty, but full of anticipation. Sometimes, the most important part of a piece is the space you choose to leave bare."
+                    </p>
                 </div>
             </section>
         </div>
@@ -309,15 +317,6 @@
             <div id="shop-grid-full" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
         </div>
 
-        <!-- Journal Full -->
-        <div id="view-journal-full" class="view-section hidden pt-10">
-            <button onclick="switchView('view-home')" class="mb-8 flex items-center gap-2 text-muted hover:text-gold transition-colors font-mono text-xs uppercase tracking-widest">
-                <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Home
-            </button>
-            <h1 class="font-serif text-4xl text-gold mb-16 border-b border-gold-dim pb-6 fade-entry">Journal Archive</h1>
-            <div id="journal-list-full" class="space-y-16 max-w-2xl mx-auto"></div>
-        </div>
-
     </main>
 
     <!-- Footer -->
@@ -326,250 +325,8 @@
         <p class="mt-2" id="year"></p>
     </footer>
 
-    <!-- JAVASCRIPT LOGIC -->
-    <script>
-        // --- Data Generation ---
-        const generateItems = (count, category) => {
-            return Array.from({ length: count }, (_, i) => ({
-                id: i + 1,
-                title: `${category} No. ${i + 1}`,
-                year: 2020 + (i % 5),
-                type: ['Oil on Canvas', 'Charcoal', 'Digital', 'Mixed Media'][i % 4],
-                aspect: i % 3 === 0 ? 'aspect-[3/4]' : i % 3 === 1 ? 'aspect-square' : 'aspect-[4/3]',
-                price: 80 + (i * 10),
-                imageSeed: i + (category === 'Art' ? 100 : category === 'Exp' ? 500 : 800)
-            }));
-        };
-
-        const DATA = {
-            artworks: [
-                { id: 1, title: "Midnight Reflection", year: "2024", type: "Oil on Canvas", aspect: "aspect-[3/4]", image: "images/DSC00036.jpg" },
-                { id: 2, title: "Golden Silence", year: "2024", type: "Charcoal", aspect: "aspect-[4/3]", image: "images/DSC00039.jpg" },
-                { id: 3, title: "Obsidian", year: "2023", type: "Mixed Media", aspect: "aspect-square", image: "images/DSC00041.jpg" },
-                { id: 4, title: "Ethereal Dust", year: "2023", type: "Digital", aspect: "aspect-[3/4]", image: "images/DSC00044.jpg" },
-                { id: 5, title: "Shadow Play", year: "2022", type: "Photography", aspect: "aspect-square", image: "images/DSC00046.jpg" },
-                { id: 6, title: "Void Texture", year: "2022", type: "Oil", aspect: "aspect-[4/3]", image: "images/DSC00049.jpg" },
-                { id: 7, title: "Luminescent", year: "2021", type: "Acrylic", aspect: "aspect-[3/4]", image: "images/DSC00051.jpg" },
-                { id: 8, title: "Luminescent", year: "2021", type: "Acrylic", aspect: "aspect-[3/4]", image: "images/DSC00053.jpg" },
-                { id: 9, title: "Luminescent", year: "2021", type: "Acrylic", aspect: "aspect-[3/4]", image: "images/DSC00056.jpg" },
-                { id: 10, title: "Luminescent", year: "2021", type: "Acrylic", aspect: "aspect-[3/4]", image: "images/DSC000581.jpg" },
-                { id: 11, title: "Luminescent", year: "2021", type: "Acrylic", aspect: "aspect-[3/4]", image: "images/DSC00062.jpg" },
-                { id: 12, title: "Luminescent", year: "2021", type: "Acrylic", aspect: "aspect-[3/4]", image: "images/DSC00063.jpg" },
-                { id: 13, title: "Luminescent", year: "2021", type: "Acrylic", aspect: "aspect-[3/4]", image: "images/DSC00065.jpg" },
-                { id: 14, title: "Luminescent", year: "2021", type: "Acrylic", aspect: "aspect-[3/4]", image: "images/DSC00067.jpg" },
-                { id: 15, title: "Luminescent", year: "2021", type: "Acrylic", aspect: "aspect-[3/4]", image: "images/DSC00068.jpg" },
-                { id: 16, title: "Luminescent", year: "2021", type: "Acrylic", aspect: "aspect-[3/4]", image: "images/DSC00072.jpg" },
-                { id: 17, title: "Luminescent", year: "2021", type: "Acrylic", aspect: "aspect-[3/4]", image: "images/DSC00075.jpg" },
-                { id: 18, title: "Luminescent", year: "2021", type: "Acrylic", aspect: "aspect-[3/4]", image: "images/DSC00078.jpg" },
-                { id: 19, title: "Luminescent", year: "2021", type: "Acrylic", aspect: "aspect-[3/4]", image: "images/DSC00081.jpg" },
-                { id: 20, title: "Luminescent", year: "2021", type: "Acrylic", aspect: "aspect-[3/4]", image: "images/DSC00083.jpg" },
-                { id: 21, title: "Luminescent", year: "2021", type: "Acrylic", aspect: "aspect-[3/4]", image: "images/DSC00084.jpg" },
-                { id: 22, title: "Luminescent", year: "2021", type: "Acrylic", aspect: "aspect-[3/4]", image: "images/DSC00086.jpg" },
-                { id: 23, title: "Luminescent", year: "2021", type: "Acrylic", aspect: "aspect-[3/4]", image: "images/DSC00051.jpg" },
-                { id: 24, title: "Luminescent", year: "2021", type: "Acrylic", aspect: "aspect-[3/4]", image: "images/DSC00051.jpg" },
-                { id: 25, title: "Luminescent", year: "2021", type: "Acrylic", aspect: "aspect-[3/4]", image: "images/DSC00051.jpg" },
-                
-                // Filler items to make the archive look full. 
-                ...generateItems(15, 'Archive Study')
-            ],
-            experiments: generateItems(40, 'Exp'),
-            shop: generateItems(30, 'Print'),
-            journal: Array.from({ length: 20 }, (_, i) => ({
-                id: i,
-                date: `Oct ${10 + i}, 2023`,
-                title: i === 0 ? 'The gentle art of doing nothing' : `Reflection ${i + 1}: On Time`,
-                preview: 'Why do we return to certain colors? For me, cobalt has always felt like a memory I can’t quite place. It is cold yet inviting, deep yet flat...'
-            }))
-        };
-
-        // --- Render Functions ---
-
-        function createArtworkCard(work, delay = 0) {
-            // Check if user provided a custom image, otherwise use placeholder
-            const imgSrc = work.image ? work.image : `https://picsum.photos/seed/${work.imageSeed}/800/1000`;
-            
-            return `
-            <div class="fade-entry group cursor-pointer" style="animation-delay: ${delay}ms">
-                <div class="w-full ${work.aspect} bg-surface overflow-hidden relative mb-4 border border-gold-dim">
-                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-700 flex items-center justify-center text-gold z-10 opacity-0 group-hover:opacity-100">
-                        <span class="font-serif italic text-lg">View Detail</span>
-                    </div>
-                    <img src="${imgSrc}" alt="${work.title}" loading="lazy" class="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000 ease-out">
-                </div>
-                <div class="flex justify-between items-baseline text-gold">
-                    <h3 class="font-serif text-xl">${work.title}</h3>
-                    <span class="font-mono text-xs text-muted">${work.year}</span>
-                </div>
-                <p class="text-sm font-light text-paper mt-1">${work.type}</p>
-            </div>
-            `;
-        }
-
-        function createExperimentCard(item, delay = 0) {
-            return `
-            <div class="break-inside-avoid mb-8 fade-entry" style="animation-delay: ${delay}ms">
-                <div class="bg-surface p-6 rounded-sm border border-gold-dim hover:border-gold transition-colors duration-500">
-                    <div class="aspect-video bg-surface-light w-full mb-4 overflow-hidden grayscale hover:grayscale-0 transition-all duration-700">
-                        <img src="https://picsum.photos/seed/${item.imageSeed}/600/400" loading="lazy" alt="Process" class="w-full h-full object-cover opacity-90">
-                    </div>
-                    <p class="font-mono text-xs text-muted mb-2">Exp. 0${item.id}</p>
-                    <p class="font-serif text-gold">Process study No. ${item.id}</p>
-                </div>
-            </div>
-            `;
-        }
-
-        function createShopCard(item, delay = 0) {
-            return `
-            <div class="fade-entry group" style="animation-delay: ${delay}ms">
-                <div class="aspect-square bg-surface mb-4 overflow-hidden border border-gold-dim">
-                    <img src="https://picsum.photos/seed/${item.imageSeed}/500/500" loading="lazy" alt="Print" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 opacity-90 group-hover:opacity-100">
-                </div>
-                <div class="flex justify-between items-start">
-                    <div>
-                        <h3 class="font-serif text-lg text-gold">${item.title}</h3>
-                        <p class="text-xs text-muted mt-1 uppercase tracking-wider">Limited Print</p>
-                    </div>
-                    <span class="font-mono text-sm text-paper">$${item.price}</span>
-                </div>
-                <button class="mt-4 w-full py-2 border border-gold-dim text-muted text-xs uppercase tracking-widest hover:bg-gold hover:text-midnight transition-colors">
-                    Add to Cart
-                </button>
-            </div>
-            `;
-        }
-
-        function createJournalEntry(entry, delay = 0) {
-            return `
-            <article class="group cursor-pointer fade-entry" style="animation-delay: ${delay}ms">
-                <span class="font-mono text-xs text-muted mb-2 block">${entry.date}</span>
-                <h3 class="font-serif text-2xl text-gold mb-4 group-hover:text-paper transition-colors">
-                    ${entry.title}
-                </h3>
-                <p class="text-paper font-light leading-loose">
-                    ${entry.preview}
-                </p>
-                <span class="inline-block mt-4 text-xs uppercase tracking-widest text-muted border-b border-transparent group-hover:border-gold transition-all">
-                    Read Entry
-                </span>
-            </article>
-            `;
-        }
-
-        // --- Initialization ---
-
-        function init() {
-            // Render Previews
-            
-            // 1. Randomize Artworks for Home Preview
-            // Clone the array and shuffle it
-            const shuffledArt = [...DATA.artworks].sort(() => 0.5 - Math.random());
-            // Take the first 6 items from the shuffled list
-            const randomPreviewArt = shuffledArt.slice(0, 6);
-            
-            document.getElementById('artworks-grid-preview').innerHTML = randomPreviewArt.map((w, i) => createArtworkCard(w, i * 100)).join('');
-            
-            document.getElementById('experiments-grid-preview').innerHTML = DATA.experiments.slice(0, 4).map((w, i) => createExperimentCard(w, i * 100)).join('');
-            document.getElementById('shop-grid-preview').innerHTML = DATA.shop.slice(0, 3).map((w, i) => createShopCard(w, i * 100)).join('');
-            document.getElementById('journal-list-preview').innerHTML = DATA.journal.slice(0, 3).map((w, i) => createJournalEntry(w, i * 100)).join('');
-
-            // Render Full Lists
-            document.getElementById('artworks-grid-full').innerHTML = DATA.artworks.map(w => createArtworkCard(w)).join('');
-            document.getElementById('experiments-grid-full').innerHTML = DATA.experiments.map(w => createExperimentCard(w)).join('');
-            document.getElementById('shop-grid-full').innerHTML = DATA.shop.map(w => createShopCard(w)).join('');
-            document.getElementById('journal-list-full').innerHTML = DATA.journal.map(w => createJournalEntry(w)).join('');
-
-            // Set Year
-            document.getElementById('year').innerText = `© ${new Date().getFullYear()} Elara Vance`;
-
-            // Initialize Icons
-            lucide.createIcons();
-
-            // Setup Scroll Listener for Nav Active States
-            window.addEventListener('scroll', updateActiveNav);
-        }
-
-        // --- Navigation Logic ---
-
-        function updateActiveNav() {
-            const sections = ['home', 'artworks', 'experiments', 'shop', 'journal', 'custom', 'about'];
-            const scrollPos = window.scrollY + 250; 
-            
-            // Only update if we are in home view
-            if(document.getElementById('view-home').classList.contains('hidden')) {
-                document.querySelectorAll('.nav-link').forEach(link => {
-                    link.classList.remove('text-gold', 'font-normal');
-                    link.classList.add('text-muted');
-                });
-                return;
-            }
-
-            sections.forEach(section => {
-                const el = document.getElementById(section);
-                if (el && el.offsetTop <= scrollPos && (el.offsetTop + el.offsetHeight) > scrollPos) {
-                    document.querySelectorAll('.nav-link').forEach(link => {
-                        if (link.dataset.target === section) {
-                            link.classList.add('text-gold', 'font-normal');
-                            link.classList.remove('text-muted');
-                            // Add underline effect
-                            link.classList.add('after:content-[""]', 'after:absolute', 'after:-bottom-1', 'after:left-0', 'after:w-full', 'after:h-px', 'after:bg-gold');
-                        } else {
-                            link.classList.remove('text-gold', 'font-normal', 'after:content-[""]', 'after:absolute', 'after:-bottom-1', 'after:left-0', 'after:w-full', 'after:h-px', 'after:bg-gold');
-                            link.classList.add('text-muted');
-                        }
-                    });
-                }
-            });
-        }
-
-        function switchView(viewId) {
-            // Scroll to top
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-
-            // Hide all views
-            document.querySelectorAll('.view-section').forEach(el => {
-                el.classList.add('hidden');
-            });
-
-            // Show target view
-            const target = document.getElementById(viewId);
-            target.classList.remove('hidden');
-            target.classList.add('animate-fade-in-up'); // Re-trigger animation
-
-            // Update Icons (in case they need re-render)
-            lucide.createIcons();
-            
-            // Force nav update
-            if(viewId !== 'view-home') {
-                 document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('text-gold', 'after:bg-gold'));
-            }
-        }
-
-        function navigateTo(target) {
-            const homeView = document.getElementById('view-home');
-            
-            // If we are not on home view, go there first
-            if (homeView.classList.contains('hidden')) {
-                switchView('view-home');
-                // Wait for view switch then scroll
-                setTimeout(() => {
-                    const el = document.getElementById(target);
-                    if (el) el.scrollIntoView({ behavior: 'smooth' });
-                }, 100);
-            } else {
-                // Just scroll
-                const el = document.getElementById(target);
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-        
-        function scrollToSection(id) {
-            navigateTo(id);
-        }
-
-        // Run Init
-        window.addEventListener('DOMContentLoaded', init);
-
-    </script>
+    <!-- Linking to your separate JS files! -->
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>
