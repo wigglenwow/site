@@ -6,12 +6,12 @@
     <title>WigglenWow | Portfolio</title>
     
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="[https://fonts.googleapis.com](https://fonts.googleapis.com)">
+    <link rel="preconnect" href="[https://fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
+    <link href="[https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap](https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap)" rel="stylesheet">
     
     <!-- Tailwind CSS (Configured via CDN for simplicity) -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -45,9 +45,9 @@
     </script>
 
     <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="[https://unpkg.com/lucide@latest](https://unpkg.com/lucide@latest)"></script>
 
-    <!-- Linking to your separate CSS file -->
+    <!-- Custom CSS File -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="bg-midnight text-paper font-sans selection:bg-gold selection:text-midnight antialiased overflow-x-hidden">
@@ -104,7 +104,7 @@
                 </div>
                 <!-- Grid Container -->
                 <div id="artworks-grid-preview" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
-                    <!-- Javascript will populate this with 6 RANDOM items -->
+                    <!-- Javascript will populate this -->
                 </div>
                 <div class="mt-16 text-center fade-entry">
                     <button onclick="switchView('view-artworks-full')" class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted hover:text-gold border-b border-gold-dim hover:border-gold pb-1 transition-all">
@@ -231,7 +231,7 @@
                         <p class="font-serif text-lg text-gold mb-6 italic">
                             Ready to start the conversation?
                         </p>
-                        <a href="https://docs.google.com/forms/" target="_blank" rel="noopener noreferrer" class="inline-block py-3 px-10 border border-gold bg-midnight text-gold hover:bg-gold hover:text-midnight transition-all duration-500 text-sm uppercase tracking-widest shadow-sm hover:shadow-md hover:shadow-gold-glow">
+                        <a href="[https://docs.google.com/forms/](https://docs.google.com/forms/)" target="_blank" rel="noopener noreferrer" class="inline-block py-3 px-10 border border-gold bg-midnight text-gold hover:bg-gold hover:text-midnight transition-all duration-500 text-sm uppercase tracking-widest shadow-sm hover:shadow-md hover:shadow-gold-glow">
                             Open Request Form
                         </a>
                         <p class="mt-4 text-xs text-muted font-mono">
@@ -245,30 +245,21 @@
             <section id="about" class="py-24 max-w-4xl mx-auto flex flex-col md:flex-row gap-12 items-start">
                 <div class="w-full md:w-1/3 fade-entry">
                     <div class="aspect-[3/4] bg-surface overflow-hidden border border-gold-dim">
-                        <img src="https://picsum.photos/seed/artist/800/1000" alt="Portrait" class="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 transition-opacity duration-700">
+                        <img src="images/profile.jpg" alt="Portrait" class="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 transition-opacity duration-700">
                     </div>
                 </div>
                 <div class="w-full md:w-2/3 fade-entry" style="animation-delay: 200ms;">
                     <h2 class="font-serif text-3xl mb-6 text-gold">I Hope it felt Calm.</h2>
                     <div class="space-y-6 text-paper font-light leading-loose text-lg">
                         <p>
-                          Welcome to my space. I'm Aryan Kumar Pawan, an artist and
-                          creator who finds peace in the process of making things by hand.
+                            Welcome to my space. I'm Aryan Kumar Pawan, an artist and creator who finds peace in the process of making things by hand.
                         </p>
                         <p>
-                          WigglenWow started as a place to document my experiments with
-                          different art mediums. I believe that the medium is just as 
-                          important as the subject.
+                            WigglenWow started as a place to document my experiments with different art mediums. I believe that the medium is just as important as the subject. I love the messy, unpredictable nature of traditional art—the smudge of willow charcoal, the slow drying time of watercolor and oil paint, the tactile feel of a good sketchbook.
                         </p>
                         <p>
-                          I love the messy, unpredictable nature of traditional art—the smudge
-                          of willow charcoal, the slow drying time of watercolor and oil paint, 
-                          the tactile feel of a good sketchbook. This portfolio is a collection
-                          of my finished works, my messy experiments, and the thoughts in between.
+                            This portfolio is a collection of my finished works, my messy experiments, and the thoughts in between.
                         </p>
-                    </div>
-                    <div class="mt-12 pt-12 border-t border-gold-dim">
-                        <p class="font-mono text-xs text-muted uppercase tracking-widest mb-6">Connect</p>
                     </div>
                 </div>
             </section>
@@ -317,17 +308,18 @@
     </main>
 
     <!-- Footer -->
-    <footer class="py-12 border-t border-gold-dim text-center text-muted font-light text-xs tracking-widest uppercase">
-         <div class="flex gap-6">
-           <a href="https://www.instagram.com/wigglenwow" target="_blank" rel="noopener noreferrer" class="text-muted hover:text-gold transition-colors"><i data-lucide="instagram" class="w-5 h-5"></i></a>
-           <a href="https://www.youtube.com/@wigglenwow" target="_blank" rel="noopener noreferrer" class="text-muted hover:text-gold transition-colors"><i data-lucide="youtube" class="w-5 h-5"></i></a     
-           <a href="mailto:akpnjani2@gmail.com" class="text-muted hover:text-gold transition-colors"><i data-lucide="mail" class="w-5 h-5"></i></a>
-         </div>
+    <footer class="py-12 border-t border-gold-dim flex flex-col items-center text-center text-muted font-light text-xs tracking-widest uppercase">
+        <p class="mb-6">Connect</p>
+        <div class="flex gap-6 mb-8">
+            <a href="[https://www.instagram.com/wigglenwow](https://www.instagram.com/wigglenwow)" target="_blank" rel="noopener noreferrer" class="text-muted hover:text-gold transition-colors"><i data-lucide="instagram" class="w-4 h-4"></i></a>
+            <a href="[https://www.youtube.com/@wigglenwow](https://www.youtube.com/@wigglenwow)" target="_blank" rel="noopener noreferrer" class="text-muted hover:text-gold transition-colors"><i data-lucide="youtube" class="w-4 h-4"></i></a>
+            <a href="mailto:akpnjani2@gmail.com" class="text-muted hover:text-gold transition-colors"><i data-lucide="mail" class="w-4 h-4"></i></a>
+        </div>
         <p>Designed with silence and creativity in mind</p>
         <p class="mt-2" id="year"></p>
     </footer>
 
-    <!-- Linking to your separate JS files! -->
+    <!-- JS Files Linked Here -->
     <script src="js/data.js"></script>
     <script src="js/app.js"></script>
 </body>
