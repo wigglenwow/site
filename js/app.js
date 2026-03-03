@@ -7,9 +7,6 @@ function createArtworkCard(work, delay = 0) {
     return `
     <div class="fade-entry group cursor-pointer" style="animation-delay: ${delay}ms">
         <div class="w-full ${work.aspect} bg-surface overflow-hidden relative mb-4 border border-gold-dim">
-            <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-700 flex items-center justify-center text-gold z-10 opacity-0 group-hover:opacity-100">
-                <span class="font-serif italic text-lg">View Detail</span>
-            </div>
             <img src="${imgSrc}" alt="${work.title}" loading="lazy" class="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000 ease-out">
         </div>
         <div class="flex justify-between items-baseline text-gold">
@@ -22,11 +19,12 @@ function createArtworkCard(work, delay = 0) {
 }
 
 function createExperimentCard(item, delay = 0) {
+    const imgSrc = item.image ? item.image : `https://picsum.photos/seed/${item.imageSeed}/600/400`;
     return `
     <div class="break-inside-avoid mb-8 fade-entry" style="animation-delay: ${delay}ms">
         <div class="bg-surface p-6 rounded-sm border border-gold-dim hover:border-gold transition-colors duration-500">
             <div class="aspect-video bg-surface-light w-full mb-4 overflow-hidden grayscale hover:grayscale-0 transition-all duration-700">
-                <img src="[https://picsum.photos/seed/$](https://picsum.photos/seed/$){item.imageSeed}/600/400" loading="lazy" alt="Process" class="w-full h-full object-cover opacity-90">
+                <img src="${imgSrc}" loading="lazy" alt="Process" class="w-full h-full object-cover opacity-90">
             </div>
             <p class="font-mono text-xs text-muted mb-2">Exp. 0${item.id}</p>
             <p class="font-serif text-gold">Process study No. ${item.id}</p>
@@ -48,9 +46,9 @@ function createShopCard(item, delay = 0) {
             </div>
             <span class="font-mono text-sm text-paper">$${item.price}</span>
         </div>
-        <button class="mt-4 w-full py-2 border border-gold-dim text-muted text-xs uppercase tracking-widest hover:bg-gold hover:text-midnight transition-colors">
-            Add to Cart
-        </button>
+        <a href="[https://ig.me/m/wigglenwow](https://ig.me/m/wigglenwow)" target="_blank" rel="noopener noreferrer" class="mt-4 block text-center w-full py-2 border border-gold-dim text-muted text-xs uppercase tracking-widest hover:bg-gold hover:text-midnight transition-colors">
+            Order Now
+        </a>
     </div>
     `;
 }
@@ -75,7 +73,7 @@ function init() {
     document.getElementById('shop-grid-full').innerHTML = DATA.shop.map(w => createShopCard(w)).join('');
 
     // Set Year
-    document.getElementById('year').innerText = `© ${new Date().getFullYear()} Elara Vance`;
+    document.getElementById('year').innerText = `© ${new Date().getFullYear()} Aryan Kumar Pawan`;
 
     // Initialize Icons
     lucide.createIcons();
