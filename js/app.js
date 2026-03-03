@@ -37,7 +37,7 @@ function createShopCard(item, delay = 0) {
     return `
     <div class="fade-entry group" style="animation-delay: ${delay}ms">
         <div class="aspect-square bg-surface mb-4 overflow-hidden border border-gold-dim">
-            <img src="[https://picsum.photos/seed/$](https://picsum.photos/seed/$){item.imageSeed}/500/500" loading="lazy" alt="Print" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 opacity-90 group-hover:opacity-100">
+            <img src="https://picsum.photos/seed/${item.imageSeed}/500/500" loading="lazy" alt="Print" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 opacity-90 group-hover:opacity-100">
         </div>
         <div class="flex justify-between items-start">
             <div>
@@ -46,7 +46,7 @@ function createShopCard(item, delay = 0) {
             </div>
             <span class="font-mono text-sm text-paper">$${item.price}</span>
         </div>
-        <a href="[https://ig.me/m/wigglenwow](https://ig.me/m/wigglenwow)" target="_blank" rel="noopener noreferrer" class="mt-4 block text-center w-full py-2 border border-gold-dim text-muted text-xs uppercase tracking-widest hover:bg-gold hover:text-midnight transition-colors">
+        <a href="https://ig.me/m/wigglenwow" target="_blank" rel="noopener noreferrer" class="mt-4 block text-center w-full py-2 border border-gold-dim text-muted text-xs uppercase tracking-widest hover:bg-gold hover:text-midnight transition-colors">
             Order Now
         </a>
     </div>
