@@ -107,7 +107,6 @@
                 <li><button onclick="navigateTo('home')" class="nav-link active text-gold relative hover:text-gold transition-colors duration-300" data-target="home">Home</button></li>
                 <li><button onclick="navigateTo('artworks')" class="nav-link relative hover:text-gold transition-colors duration-300" data-target="artworks">Artworks</button></li>
                 <li><button onclick="navigateTo('experiments')" class="nav-link relative hover:text-gold transition-colors duration-300" data-target="experiments">Experiments</button></li>
-                <li><button onclick="navigateTo('shop')" class="nav-link relative hover:text-gold transition-colors duration-300" data-target="shop">Shop</button></li>
                 <li><button onclick="navigateTo('custom')" class="nav-link relative hover:text-gold transition-colors duration-300" data-target="custom">Custom Work</button></li>
                 <li><button onclick="navigateTo('about')" class="nav-link relative hover:text-gold transition-colors duration-300" data-target="about">About</button></li>
             </ul>
@@ -159,7 +158,6 @@
             </section>
 
             <!-- Experiments Preview -->
-            <!-- Changed max-w-5xl to max-w-6xl to align with Artworks and Shop grids -->
             <section id="experiments" class="py-24 max-w-6xl mx-auto">
                 <div class="mb-16 fade-entry">
                     <h2 class="font-serif text-3xl mb-4 text-gold">The Desk</h2>
@@ -179,25 +177,9 @@
                 </div>
             </section>
 
-            <!-- Shop Preview -->
-            <!-- Changed max-w-5xl to max-w-6xl to align with Artworks and Experiments grids -->
-            <section id="shop" class="py-24 max-w-6xl mx-auto">
-                <div class="mb-24">
-                    <div class="flex justify-between items-baseline mb-12 fade-entry">
-                        <h2 class="font-serif text-3xl text-gold">Collect</h2>
-                    </div>
-                    <div id="shop-grid-preview" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <!-- Javascript will populate this -->
-                    </div>
-                    <div class="mt-16 text-center fade-entry">
-                        <button onclick="switchView('view-shop-full')" class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted hover:text-gold border-b border-gold-dim hover:border-gold pb-1 transition-all">
-                            Browse Full Shop <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Tools / Affiliate -->
-                <div class="border-t border-gold-dim pt-16 fade-entry">
+            <!-- Tools / Affiliate Section (Now standalone) -->
+            <section id="tools" class="py-24 max-w-6xl mx-auto border-t border-gold-dim">
+                <div class="fade-entry">
                     <h2 class="font-serif text-2xl mb-2 text-gold">Tools I Use</h2>
                     <p class="text-muted font-light text-sm mb-8">Things that help me create. (Affiliate links)</p>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -266,7 +248,7 @@
             </section>
 
             <!-- Custom Work -->
-            <section id="custom" class="py-24 max-w-xl mx-auto text-center">
+            <section id="custom" class="py-24 max-w-xl mx-auto text-center border-t border-gold-dim">
                 <div class="fade-entry">
                     <h2 class="font-serif text-3xl mb-6 text-gold">Commission a piece</h2>
                     <p class="text-muted font-light leading-loose mb-10">
@@ -343,15 +325,6 @@
             <div id="experiments-grid-full" class="columns-1 md:columns-2 lg:columns-3 gap-8"></div>
         </div>
 
-        <!-- Shop Full -->
-        <div id="view-shop-full" class="view-section hidden pt-10">
-            <button onclick="switchView('view-home')" class="mb-8 flex items-center gap-2 text-muted hover:text-gold transition-colors font-mono text-xs uppercase tracking-widest">
-                <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Home
-            </button>
-            <h1 class="font-serif text-4xl text-gold mb-16 border-b border-gold-dim pb-6 fade-entry">Shop Collection</h1>
-            <div id="shop-grid-full" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
-        </div>
-
     </main>
 
     <!-- Footer -->
@@ -376,8 +349,7 @@
                 year: 2020 + (i % 5),
                 type: ['Oil on Canvas', 'Charcoal', 'Digital', 'Mixed Media'][i % 4],
                 aspect: 'aspect-[3/4]', 
-                price: 80 + (i * 10),
-                imageSeed: i + (category === 'Art' ? 100 : category === 'Exp' ? 500 : 800)
+                imageSeed: i + (category === 'Exp' ? 500 : 800)
             }));
         };
 
@@ -429,6 +401,10 @@
             // Extract the actual name of the art piece from the filename!
             const rawTitle = parts.length >= 3 ? parts[2].split('.')[0] : `Artwork No. ${index + 1}`;
             
+            // Subtly determine if a piece is available for print (e.g., every 3rd piece)
+            const isForSale = index % 3 === 0;
+            const printPrice = 80 + (index % 3 * 10);
+            
             return {
                 id: index + 1,
                 title: formatTitle(rawTitle), 
@@ -437,7 +413,9 @@
                 type: mediumMap[mediumCode] || 'Mixed Media', 
                 aspect: 'aspect-[3/4]',
                 image: `images/${filename}`,
-                imageSeed: index + 100
+                imageSeed: index + 100,
+                isForSale: isForSale,
+                price: printPrice
             };
         };
 
@@ -450,8 +428,7 @@
                 { id: 1, title: 'Process study No. 1', year: 'Archive', type: 'Experiment', imageSeed: 501, image: 'images/exp1.jpg' },
                 { id: 2, title: 'Process study No. 2', year: 'Archive', type: 'Experiment', imageSeed: 502, image: 'images/exp2.jpg' },
                 ...generateItems(4, 'Exp') // Reduced fake placeholders so real art shines
-            ],
-            shop: generateItems(9, 'Print')
+            ]
         };
 
         // --- Render Functions ---
@@ -460,6 +437,13 @@
             // Check if user provided a custom image, otherwise use placeholder fallback
             const imgSrc = work.image ? work.image : `https://picsum.photos/seed/${work.imageSeed}/800/1000`;
             const fallbackSrc = `https://picsum.photos/seed/${work.imageSeed}/800/1000`;
+            
+            // Minimal, calm purchase link that only renders if the piece is available
+            const purchaseLinkHtml = work.isForSale 
+                ? `<a href="https://ig.me/m/wigglenwow" target="_blank" rel="noopener noreferrer" class="mt-4 inline-block text-[10px] uppercase tracking-widest text-muted hover:text-gold border-b border-transparent hover:border-gold transition-all duration-300">
+                    Order Print — $${work.price}
+                   </a>` 
+                : '';
             
             return `
             <div class="fade-entry group cursor-pointer" style="animation-delay: ${delay}ms">
@@ -471,6 +455,7 @@
                     <span class="font-mono text-xs text-muted">${work.year}</span>
                 </div>
                 <p class="text-sm font-light text-paper mt-1">${work.type}</p>
+                ${purchaseLinkHtml}
             </div>
             `;
         }
@@ -491,26 +476,6 @@
             `;
         }
 
-        function createShopCard(item, delay = 0) {
-            return `
-            <div class="fade-entry group" style="animation-delay: ${delay}ms">
-                <div class="aspect-square bg-surface mb-4 overflow-hidden border border-gold-dim">
-                    <img src="https://picsum.photos/seed/${item.imageSeed}/500/500" loading="lazy" alt="Print" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 opacity-90 group-hover:opacity-100">
-                </div>
-                <div class="flex justify-between items-start">
-                    <div>
-                        <h3 class="font-serif text-lg text-gold">${item.title}</h3>
-                        <p class="text-xs text-muted mt-1 uppercase tracking-wider">Limited Print</p>
-                    </div>
-                    <span class="font-mono text-sm text-paper">$${item.price}</span>
-                </div>
-                <a href="https://ig.me/m/wigglenwow" target="_blank" rel="noopener noreferrer" class="mt-4 block text-center w-full py-2 border border-gold-dim text-muted text-xs uppercase tracking-widest hover:bg-gold hover:text-midnight transition-colors">
-                    Order Now
-                </a>
-            </div>
-            `;
-        }
-
         // --- Initialization ---
 
         function init() {
@@ -519,16 +484,13 @@
             // Randomize items for all Home Previews
             const shuffledArt = [...DATA.artworks].sort(() => 0.5 - Math.random());
             const shuffledExp = [...DATA.experiments].sort(() => 0.5 - Math.random());
-            const shuffledShop = [...DATA.shop].sort(() => 0.5 - Math.random());
             
             document.getElementById('artworks-grid-preview').innerHTML = shuffledArt.slice(0, 6).map((w, i) => createArtworkCard(w, i * 100)).join('');
             document.getElementById('experiments-grid-preview').innerHTML = shuffledExp.slice(0, 6).map((w, i) => createExperimentCard(w, i * 100)).join('');
-            document.getElementById('shop-grid-preview').innerHTML = shuffledShop.slice(0, 3).map((w, i) => createShopCard(w, i * 100)).join('');
 
             // Render Full Lists
             document.getElementById('artworks-grid-full').innerHTML = DATA.artworks.map(w => createArtworkCard(w)).join('');
             document.getElementById('experiments-grid-full').innerHTML = DATA.experiments.map(w => createExperimentCard(w)).join('');
-            document.getElementById('shop-grid-full').innerHTML = DATA.shop.map(w => createShopCard(w)).join('');
 
             // Set Year
             document.getElementById('year').innerText = `© ${new Date().getFullYear()} Aryan Kumar Pawan`;
