@@ -1,629 +1,672 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WigglenWow | Portfolio</title>
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        midnight: '#121212',
-                        gold: '#D4AF37',
-                        'gold-dim': 'rgba(212, 175, 55, 0.2)',
-                        'gold-glow': 'rgba(212, 175, 55, 0.1)',
-                        paper: '#E5E0D8',
-                        muted: '#A1A1AA',
-                        surface: '#1E1E1E',
-                        'surface-light': '#2A2A2A'
-                    },
-                    fontFamily: {
-                        serif: ['Playfair Display', 'serif'],
-                        sans: ['Lato', 'sans-serif'],
-                    },
-                    animation: {
-                        'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards',
-                    },
-                    keyframes: {
-                        fadeInUp: {
-                            '0%': { opacity: '0', transform: 'translateY(20px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WigglenWow | Portfolio</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        midnight: '#121212',
+                        gold: '#D4AF37',
+                        'gold-dim': 'rgba(212, 175, 55, 0.2)',
+                        'gold-glow': 'rgba(212, 175, 55, 0.1)',
+                        paper: '#E5E0D8',
+                        muted: '#A1A1AA',
+                        surface: '#1E1E1E',
+                        'surface-light': '#2A2A2A'
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Lato', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- Custom CSS -->
-    <style>
-        /* Custom scrollbar for Webkit browsers */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #121212; 
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #333; 
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #D4AF37; 
-        }
-        
-        .fade-hidden {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        .fade-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        /* Smooth scrolling for the whole page */
-        html {
-            scroll-behavior: smooth;
-        }
-    </style>
+    <!-- Custom CSS -->
+    <style>
+        /* Custom scrollbar for Webkit browsers */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #121212; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #D4AF37; 
+        }
+        
+        .fade-hidden {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Smooth scrolling for the whole page */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Active Navigation Link Styling */
+        .nav-link.active {
+            color: #D4AF37; /* text-gold */
+            font-weight: 400; /* normal */
+        }
+        .nav-link.active::after {
+            content: "";
+            position: absolute;
+            bottom: -0.25rem;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: #D4AF37;
+        }
+    </style>
 </head>
 <body class="bg-midnight text-paper font-sans selection:bg-gold selection:text-midnight antialiased overflow-x-hidden">
 
-    <!-- Navigation -->
-    <nav class="fixed top-0 left-0 w-full bg-midnight/95 backdrop-blur-md z-50 py-6 px-6 md:px-12 border-b border-gold-dim transition-all duration-500">
-        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-            <div onclick="navigateTo('home')" class="font-serif text-xl cursor-pointer tracking-wider text-gold hover:opacity-60 transition-opacity font-bold">
-                WigglenWow
-            </div>
-            <ul class="flex flex-wrap justify-center gap-6 md:gap-8 text-sm font-light tracking-wide text-muted">
-                <li><button onclick="navigateTo('home')" class="nav-link hover:text-gold transition-colors duration-300 relative" data-target="home">Home</button></li>
-                <li><button onclick="navigateTo('artworks')" class="nav-link hover:text-gold transition-colors duration-300 relative" data-target="artworks">Artworks</button></li>
-                <li><button onclick="navigateTo('experiments')" class="nav-link hover:text-gold transition-colors duration-300 relative" data-target="experiments">Experiments</button></li>
-                <li><button onclick="navigateTo('shop')" class="nav-link hover:text-gold transition-colors duration-300 relative" data-target="shop">Shop</button></li>
-                <li><button onclick="navigateTo('custom')" class="nav-link hover:text-gold transition-colors duration-300 relative" data-target="custom">Custom Work</button></li>
-                <li><button onclick="navigateTo('about')" class="nav-link hover:text-gold transition-colors duration-300 relative" data-target="about">About</button></li>
-            </ul>
-        </div>
-    </nav>
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 w-full bg-midnight/95 backdrop-blur-md z-50 py-6 px-6 md:px-12 border-b border-gold-dim transition-all duration-500">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div onclick="navigateTo('home')" class="font-serif text-xl cursor-pointer tracking-wider text-gold hover:opacity-60 transition-opacity font-bold">
+                WigglenWow
+            </div>
+            <ul class="flex flex-wrap justify-center gap-6 md:gap-8 text-sm font-light tracking-wide text-muted">
+                <li><button onclick="navigateTo('home')" class="nav-link active text-gold relative hover:text-gold transition-colors duration-300" data-target="home">Home</button></li>
+                <li><button onclick="navigateTo('artworks')" class="nav-link relative hover:text-gold transition-colors duration-300" data-target="artworks">Artworks</button></li>
+                <li><button onclick="navigateTo('experiments')" class="nav-link relative hover:text-gold transition-colors duration-300" data-target="experiments">Experiments</button></li>
+                <li><button onclick="navigateTo('shop')" class="nav-link relative hover:text-gold transition-colors duration-300" data-target="shop">Shop</button></li>
+                <li><button onclick="navigateTo('custom')" class="nav-link relative hover:text-gold transition-colors duration-300" data-target="custom">Custom Work</button></li>
+                <li><button onclick="navigateTo('about')" class="nav-link relative hover:text-gold transition-colors duration-300" data-target="about">About</button></li>
+            </ul>
+        </div>
+    </nav>
 
-    <!-- MAIN CONTENT AREA -->
-    <main class="pt-32 pb-20 px-6 md:px-12 max-w-7xl mx-auto min-h-screen">
-        
-        <!-- HOME VIEW (Scrollable Sections) -->
-        <div id="view-home" class="view-section block">
-            
-            <!-- Hero -->
-            <section id="home" class="min-h-[90vh] flex flex-col justify-center items-center text-center px-4 pt-10">
-                <div class="fade-entry">
-                    <h1 class="font-serif text-4xl md:text-6xl text-gold mb-8 leading-tight">
-                        A calm Gateaway <br /> to my creative space.
-                    </h1>
-                </div>
-                <div class="fade-entry" style="animation-delay: 200ms;">
-                    <p class="max-w-md mx-auto text-paper leading-loose font-light mb-10 text-lg">
-                        Welcome to my Space. This is where I collect my Thoughts, Creativity, and Passion.
-                        There is no rush here. Take your time, look around, and breathe.
-                    </p>
-                </div>
-                <div class="fade-entry" style="animation-delay: 400ms;">
-                    <button onclick="scrollToSection('artworks')" class="group flex items-center gap-2 text-muted hover:text-gold transition-all duration-500 border-b border-transparent hover:border-gold pb-1">
-                        View the collection <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
-                    </button>
-                </div>
-            </section>
+    <!-- MAIN CONTENT AREA -->
+    <main class="pt-32 pb-20 px-6 md:px-12 max-w-7xl mx-auto min-h-screen">
+        
+        <!-- HOME VIEW (Scrollable Sections) -->
+        <div id="view-home" class="view-section block">
+            
+            <!-- Hero -->
+            <section id="home" class="min-h-[90vh] flex flex-col justify-center items-center text-center px-4 pt-10">
+                <div class="fade-entry">
+                    <h1 class="font-serif text-4xl md:text-6xl text-gold mb-8 leading-tight">
+                        A calm Gateway <br /> to my creative space.
+                    </h1>
+                </div>
+                <div class="fade-entry" style="animation-delay: 200ms;">
+                    <p class="max-w-md mx-auto text-paper leading-loose font-light mb-10 text-lg">
+                        Welcome to my Space. This is where I collect my Thoughts, Creativity, and Passion.
+                        There is no rush here. Take your time, look around, and breathe.
+                    </p>
+                </div>
+                <div class="fade-entry" style="animation-delay: 400ms;">
+                    <button onclick="scrollToSection('artworks')" class="group flex items-center gap-2 text-muted hover:text-gold transition-all duration-500 border-b border-transparent hover:border-gold pb-1">
+                        View the collection <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+                </div>
+            </section>
 
-            <div class="h-px bg-gold w-full max-w-2xl mx-auto my-12 opacity-30"></div>
+            <div class="h-px bg-gold w-full max-w-2xl mx-auto my-12 opacity-30"></div>
 
-            <!-- Artworks Preview -->
-            <section id="artworks" class="py-24 max-w-6xl mx-auto">
-                <div class="flex justify-between items-baseline mb-12 fade-entry">
-                    <p class="font-serif text-2xl text-gold italic">Recent pieces.</p>
-                </div>
-                <!-- Grid Container -->
-                <div id="artworks-grid-preview" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
-                    <!-- Javascript will populate this -->
-                </div>
-                <div class="mt-16 text-center fade-entry">
-                    <button onclick="switchView('view-artworks-full')" class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted hover:text-gold border-b border-gold-dim hover:border-gold pb-1 transition-all">
-                        View Full Archive <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
-                    </button>
-                </div>
-            </section>
+            <!-- Artworks Preview -->
+            <section id="artworks" class="py-24 max-w-6xl mx-auto">
+                <div class="flex justify-between items-baseline mb-12 fade-entry">
+                    <p class="font-serif text-2xl text-gold italic">Recent pieces.</p>
+                </div>
+                <!-- Grid Container -->
+                <div id="artworks-grid-preview" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
+                    <!-- Javascript will populate this -->
+                </div>
+                <div class="mt-16 text-center fade-entry">
+                    <button onclick="switchView('view-artworks-full')" class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted hover:text-gold border-b border-gold-dim hover:border-gold pb-1 transition-all">
+                        View Full Archive <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                    </button>
+                </div>
+            </section>
 
-            <!-- Experiments Preview -->
-            <section id="experiments" class="py-24 max-w-5xl mx-auto">
-                <div class="mb-16 fade-entry">
-                    <h2 class="font-serif text-3xl mb-4 text-gold">The Desk</h2>
-                    <p class="text-muted font-light leading-relaxed max-w-xl">
-                        Not every art is done on paper and canvas. 
-                        This section is for the crazy ideas, the process,
-                        the "what if" moments using clay, daily items, and fabric.                  
-                    </p>
-                </div>
-                <div id="experiments-grid-preview" class="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
-                    <!-- Javascript will populate this -->
-                </div>
-                <div class="mt-16 text-center fade-entry">
-                    <button onclick="switchView('view-experiments-full')" class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted hover:text-gold border-b border-gold-dim hover:border-gold pb-1 transition-all">
-                        See All Experiments <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
-                    </button>
-                </div>
-            </section>
+            <!-- Experiments Preview -->
+            <!-- Changed max-w-5xl to max-w-6xl to align with Artworks and Shop grids -->
+            <section id="experiments" class="py-24 max-w-6xl mx-auto">
+                <div class="mb-16 fade-entry">
+                    <h2 class="font-serif text-3xl mb-4 text-gold">The Desk</h2>
+                    <p class="text-muted font-light leading-relaxed max-w-xl">
+                        Not every art is done on paper and canvas. 
+                        This section is for the crazy ideas, the process,
+                        the "what if" moments using clay, daily items, and fabric.                  
+                    </p>
+                </div>
+                <div id="experiments-grid-preview" class="columns-1 md:columns-2 lg:columns-3 gap-8">
+                    <!-- Javascript will populate this -->
+                </div>
+                <div class="mt-16 text-center fade-entry">
+                    <button onclick="switchView('view-experiments-full')" class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted hover:text-gold border-b border-gold-dim hover:border-gold pb-1 transition-all">
+                        See All Experiments <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                    </button>
+                </div>
+            </section>
 
-            <!-- Shop Preview -->
-            <section id="shop" class="py-24 max-w-5xl mx-auto">
-                <div class="mb-24">
-                    <div class="flex justify-between items-baseline mb-12 fade-entry">
-                        <h2 class="font-serif text-3xl text-gold">Collect</h2>
-                    </div>
-                    <div id="shop-grid-preview" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <!-- Javascript will populate this -->
-                    </div>
-                    <div class="mt-16 text-center fade-entry">
-                        <button onclick="switchView('view-shop-full')" class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted hover:text-gold border-b border-gold-dim hover:border-gold pb-1 transition-all">
-                            Browse Full Shop <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
-                        </button>
-                    </div>
-                </div>
+            <!-- Shop Preview -->
+            <!-- Changed max-w-5xl to max-w-6xl to align with Artworks and Experiments grids -->
+            <section id="shop" class="py-24 max-w-6xl mx-auto">
+                <div class="mb-24">
+                    <div class="flex justify-between items-baseline mb-12 fade-entry">
+                        <h2 class="font-serif text-3xl text-gold">Collect</h2>
+                    </div>
+                    <div id="shop-grid-preview" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <!-- Javascript will populate this -->
+                    </div>
+                    <div class="mt-16 text-center fade-entry">
+                        <button onclick="switchView('view-shop-full')" class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted hover:text-gold border-b border-gold-dim hover:border-gold pb-1 transition-all">
+                            Browse Full Shop <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+                </div>
 
-                <!-- Tools / Affiliate -->
-                <div class="border-t border-gold-dim pt-16 fade-entry">
-                    <h2 class="font-serif text-2xl mb-2 text-gold">Tools I Use</h2>
-                    <p class="text-muted font-light text-sm mb-8">Things that help me create. (Affiliate links)</p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <a href="#" class="flex items-center p-4 border border-gold-dim hover:border-gold-dim transition-colors group bg-surface hover:bg-surface-light">
-                            <div class="p-3 bg-surface-light text-gold mr-4 rounded-full">
-                                <i data-lucide="book" class="w-4 h-4"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-serif text-gold">Moleskine Sketchbook</h4>
-                                <p class="text-xs text-muted uppercase tracking-wide">Planning</p>
-                            </div>
-                            <i data-lucide="arrow-right" class="ml-auto w-3.5 h-3.5 text-muted group-hover:text-gold transition-colors"></i>
-                        </a>
-                        <a href="#" class="flex items-center p-4 border border-gold-dim hover:border-gold-dim transition-colors group bg-surface hover:bg-surface-light">
-                            <div class="p-3 bg-surface-light text-gold mr-4 rounded-full">
-                                <i data-lucide="pen-tool" class="w-4 h-4"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-serif text-gold">Winsor & Newton Gouache</h4>
-                                <p class="text-xs text-muted uppercase tracking-wide">Painting</p>
-                            </div>
-                            <i data-lucide="arrow-right" class="ml-auto w-3.5 h-3.5 text-muted group-hover:text-gold transition-colors"></i>
-                        </a>
-                        <a href="#" class="flex items-center p-4 border border-gold-dim hover:border-gold-dim transition-colors group bg-surface hover:bg-surface-light">
-                            <div class="p-3 bg-surface-light text-gold mr-4 rounded-full">
-                                <i data-lucide="edit-2" class="w-4 h-4"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-serif text-gold">Coates Willow Charcoal</h4>
-                                <p class="text-xs text-muted uppercase tracking-wide">Drafting & Shading</p>
-                            </div>
-                            <i data-lucide="arrow-right" class="ml-auto w-3.5 h-3.5 text-muted group-hover:text-gold transition-colors"></i>
-                        </a>
-                        <a href="#" class="flex items-center p-4 border border-gold-dim hover:border-gold-dim transition-colors group bg-surface hover:bg-surface-light">
-                            <div class="p-3 bg-surface-light text-gold mr-4 rounded-full">
-                                <i data-lucide="droplet" class="w-4 h-4"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-serif text-gold">Schmincke Watercolors</h4>
-                                <p class="text-xs text-muted uppercase tracking-wide">Washes & Details</p>
-                            </div>
-                            <i data-lucide="arrow-right" class="ml-auto w-3.5 h-3.5 text-muted group-hover:text-gold transition-colors"></i>
-                        </a>
-                        <a href="#" class="flex items-center p-4 border border-gold-dim hover:border-gold-dim transition-colors group bg-surface hover:bg-surface-light">
-                            <div class="p-3 bg-surface-light text-gold mr-4 rounded-full">
-                                <i data-lucide="sun" class="w-4 h-4"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-serif text-gold">Daylight Studio Lamp</h4>
-                                <p class="text-xs text-muted uppercase tracking-wide">Workspace</p>
-                            </div>
-                            <i data-lucide="arrow-right" class="ml-auto w-3.5 h-3.5 text-muted group-hover:text-gold transition-colors"></i>
-                        </a>
-                        <a href="#" class="flex items-center p-4 border border-gold-dim hover:border-gold-dim transition-colors group bg-surface hover:bg-surface-light">
-                            <div class="p-3 bg-surface-light text-gold mr-4 rounded-full">
-                                <i data-lucide="coffee" class="w-4 h-4"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-serif text-gold">Ceramic Palette & Mug</h4>
-                                <p class="text-xs text-muted uppercase tracking-wide">Essentials</p>
-                            </div>
-                            <i data-lucide="arrow-right" class="ml-auto w-3.5 h-3.5 text-muted group-hover:text-gold transition-colors"></i>
-                        </a>
-                    </div>
-                </div>
-            </section>
+                <!-- Tools / Affiliate -->
+                <div class="border-t border-gold-dim pt-16 fade-entry">
+                    <h2 class="font-serif text-2xl mb-2 text-gold">Tools I Use</h2>
+                    <p class="text-muted font-light text-sm mb-8">Things that help me create. (Affiliate links)</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <a href="#" class="flex items-center p-4 border border-gold-dim hover:border-gold-dim transition-colors group bg-surface hover:bg-surface-light">
+                            <div class="p-3 bg-surface-light text-gold mr-4 rounded-full">
+                                <i data-lucide="book" class="w-4 h-4"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-serif text-gold">Moleskine Sketchbook</h4>
+                                <p class="text-xs text-muted uppercase tracking-wide">Planning</p>
+                            </div>
+                            <i data-lucide="arrow-right" class="ml-auto w-3.5 h-3.5 text-muted group-hover:text-gold transition-colors"></i>
+                        </a>
+                        <a href="#" class="flex items-center p-4 border border-gold-dim hover:border-gold-dim transition-colors group bg-surface hover:bg-surface-light">
+                            <div class="p-3 bg-surface-light text-gold mr-4 rounded-full">
+                                <i data-lucide="pen-tool" class="w-4 h-4"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-serif text-gold">Winsor & Newton Gouache</h4>
+                                <p class="text-xs text-muted uppercase tracking-wide">Painting</p>
+                            </div>
+                            <i data-lucide="arrow-right" class="ml-auto w-3.5 h-3.5 text-muted group-hover:text-gold transition-colors"></i>
+                        </a>
+                        <a href="#" class="flex items-center p-4 border border-gold-dim hover:border-gold-dim transition-colors group bg-surface hover:bg-surface-light">
+                            <div class="p-3 bg-surface-light text-gold mr-4 rounded-full">
+                                <i data-lucide="edit-2" class="w-4 h-4"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-serif text-gold">Coates Willow Charcoal</h4>
+                                <p class="text-xs text-muted uppercase tracking-wide">Drafting & Shading</p>
+                            </div>
+                            <i data-lucide="arrow-right" class="ml-auto w-3.5 h-3.5 text-muted group-hover:text-gold transition-colors"></i>
+                        </a>
+                        <a href="#" class="flex items-center p-4 border border-gold-dim hover:border-gold-dim transition-colors group bg-surface hover:bg-surface-light">
+                            <div class="p-3 bg-surface-light text-gold mr-4 rounded-full">
+                                <i data-lucide="droplet" class="w-4 h-4"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-serif text-gold">Schmincke Watercolors</h4>
+                                <p class="text-xs text-muted uppercase tracking-wide">Washes & Details</p>
+                            </div>
+                            <i data-lucide="arrow-right" class="ml-auto w-3.5 h-3.5 text-muted group-hover:text-gold transition-colors"></i>
+                        </a>
+                        <a href="#" class="flex items-center p-4 border border-gold-dim hover:border-gold-dim transition-colors group bg-surface hover:bg-surface-light">
+                            <div class="p-3 bg-surface-light text-gold mr-4 rounded-full">
+                                <i data-lucide="sun" class="w-4 h-4"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-serif text-gold">Daylight Studio Lamp</h4>
+                                <p class="text-xs text-muted uppercase tracking-wide">Workspace</p>
+                            </div>
+                            <i data-lucide="arrow-right" class="ml-auto w-3.5 h-3.5 text-muted group-hover:text-gold transition-colors"></i>
+                        </a>
+                        <a href="#" class="flex items-center p-4 border border-gold-dim hover:border-gold-dim transition-colors group bg-surface hover:bg-surface-light">
+                            <div class="p-3 bg-surface-light text-gold mr-4 rounded-full">
+                                <i data-lucide="coffee" class="w-4 h-4"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-serif text-gold">Ceramic Palette & Mug</h4>
+                                <p class="text-xs text-muted uppercase tracking-wide">Essentials</p>
+                            </div>
+                            <i data-lucide="arrow-right" class="ml-auto w-3.5 h-3.5 text-muted group-hover:text-gold transition-colors"></i>
+                        </a>
+                    </div>
+                </div>
+            </section>
 
-            <!-- Custom Work -->
-            <section id="custom" class="py-24 max-w-xl mx-auto text-center">
-                <div class="fade-entry">
-                    <h2 class="font-serif text-3xl mb-6 text-gold">Commission a piece</h2>
-                    <p class="text-muted font-light leading-loose mb-10">
-                      I dont really do Commission work. But if you really want something made and feel 
-                        that I am the right person for it. Contact me through the form. We will make things
-                        together. Our creativity and my Skill combined.
-                    </p>
-                    <div class="bg-surface p-12 border border-gold-dim rounded-sm">
-                        <p class="font-serif text-lg text-gold mb-6 italic">
-                            Ready to start the conversation?
-                        </p>
-                        <a href="https://docs.google.com/forms/" target="_blank" rel="noopener noreferrer" class="inline-block py-3 px-10 border border-gold bg-midnight text-gold hover:bg-gold hover:text-midnight transition-all duration-500 text-sm uppercase tracking-widest shadow-sm hover:shadow-md hover:shadow-gold-glow">
-                            Open Request Form
-                        </a>
-                        <p class="mt-4 text-xs text-muted font-mono">
-                            Opens in a new window via Google Forms
-                        </p>
-                    </div>
-                </div>
-            </section>
+            <!-- Custom Work -->
+            <section id="custom" class="py-24 max-w-xl mx-auto text-center">
+                <div class="fade-entry">
+                    <h2 class="font-serif text-3xl mb-6 text-gold">Commission a piece</h2>
+                    <p class="text-muted font-light leading-loose mb-10">
+                      I don't really do commission work. But if you really want something made and feel 
+                        that I am the right person for it. Contact me through the form. We will make things
+                        together. Our creativity and my Skill combined.
+                    </p>
+                    <div class="bg-surface p-12 border border-gold-dim rounded-sm">
+                        <p class="font-serif text-lg text-gold mb-6 italic">
+                            Ready to start the conversation?
+                        </p>
+                        <a href="https://docs.google.com/forms/" target="_blank" rel="noopener noreferrer" class="inline-block py-3 px-10 border border-gold bg-midnight text-gold hover:bg-gold hover:text-midnight transition-all duration-500 text-sm uppercase tracking-widest shadow-sm hover:shadow-md hover:shadow-gold-glow">
+                            Open Request Form
+                        </a>
+                        <p class="mt-4 text-xs text-muted font-mono">
+                            Opens in a new window via Google Forms
+                        </p>
+                    </div>
+                </div>
+            </section>
 
-            <!-- About -->
-            <section id="about" class="py-24 max-w-4xl mx-auto flex flex-col md:flex-row gap-12 items-start">
-                <div class="w-full md:w-1/3 fade-entry">
-                    <div class="aspect-[3/4] bg-surface overflow-hidden border border-gold-dim">
-                        <img src="images/profile.jpg" alt="Portrait" class="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 transition-opacity duration-700">
-                    </div>
-                </div>
-                <div class="w-full md:w-2/3 fade-entry" style="animation-delay: 200ms;">
-                    <h2 class="font-serif text-3xl mb-6 text-gold">I Hope it felt Calm.</h2>
-                    <div class="space-y-6 text-paper font-light leading-loose text-lg">
-                        <p>
-                            Welcome to my space. I'm Aryan Kumar Pawan, an artist and creator who finds peace in the process of making things by hand.
-                        </p>
-                        <p>
-                            WigglenWow started as a place to document my experiments with different art mediums. I believe that the medium is just as important as the subject. I love the messy, unpredictable nature of traditional art—the smudge of willow charcoal, the slow drying time of watercolor and oil paint, the tactile feel of a good sketchbook.
-                        </p>
-                        <p>
-                            This portfolio is a collection of my finished works, my messy experiments, and the thoughts in between.
-                        </p>
-                    </div>
-                </div>
-            </section>
+            <!-- About -->
+            <section id="about" class="py-24 max-w-4xl mx-auto flex flex-col md:flex-row gap-12 items-start">
+                <div class="w-full md:w-1/3 fade-entry">
+                    <div class="aspect-[3/4] bg-surface overflow-hidden border border-gold-dim">
+                        <img src="images/profile.jpg" onerror="this.onerror=null;this.src='https://picsum.photos/seed/profile/400/500';" alt="Portrait" class="w-full h-full object-cover grayscale opacity-80 hover:opacity-100 transition-opacity duration-700">
+                    </div>
+                </div>
+                <div class="w-full md:w-2/3 fade-entry" style="animation-delay: 200ms;">
+                    <h2 class="font-serif text-3xl mb-6 text-gold">I Hope it felt Calm.</h2>
+                    <div class="space-y-6 text-paper font-light leading-loose text-lg">
+                        <p>
+                            Welcome to my space. I'm Aryan Kumar Pawan, an artist and creator who finds peace in the process of making things by hand.
+                        </p>
+                        <p>
+                            WigglenWow started as a place to document my experiments with different art mediums. I believe that the medium is just as important as the subject. I love the messy, unpredictable nature of traditional art—the smudge of willow charcoal, the slow drying time of watercolor and oil paint, the tactile feel of a good sketchbook.
+                        </p>
+                        <p>
+                            This portfolio is a collection of my finished works, my messy experiments, and the thoughts in between.
+                        </p>
+                    </div>
+                </div>
+            </section>
 
-            <!-- Thoughts -->
-            <section id="thoughts" class="py-24 max-w-4xl mx-auto">
-                <div class="fade-entry bg-surface p-10 md:p-16 border border-gold-dim relative">
-                    <i data-lucide="quote" class="w-10 h-10 text-gold-dim absolute top-6 left-6 opacity-40"></i>
-                    <h2 class="font-serif text-2xl mb-6 text-gold text-center relative z-10">A Current Thought</h2>
-                    <p class="text-paper font-light leading-loose text-lg italic text-center relative z-10">
-                        "I've been thinking a lot about the spaces between things lately. Not the objects themselves, but the air around them. How silence isn't empty, but full of anticipation. Sometimes, the most important part of a piece is the space you choose to leave bare."
-                    </p>
-                </div>
-            </section>
-        </div>
+            <!-- Thoughts -->
+            <section id="thoughts" class="py-24 max-w-4xl mx-auto">
+                <div class="fade-entry bg-surface p-10 md:p-16 border border-gold-dim relative">
+                    <i data-lucide="quote" class="w-10 h-10 text-gold-dim absolute top-6 left-6 opacity-40"></i>
+                    <h2 class="font-serif text-2xl mb-6 text-gold text-center relative z-10">A Current Thought</h2>
+                    <p class="text-paper font-light leading-loose text-lg italic text-center relative z-10">
+                        "I've been thinking a lot about the spaces between things lately. Not the objects themselves, but the air around them. How silence isn't empty, but full of anticipation. Sometimes, the most important part of a piece is the space you choose to leave bare."
+                    </p>
+                </div>
+            </section>
+        </div>
 
-        <!-- FULL PAGE VIEWS (Hidden by default) -->
-        
-        <!-- Artworks Full -->
-        <div id="view-artworks-full" class="view-section hidden pt-10">
-            <button onclick="switchView('view-home')" class="mb-8 flex items-center gap-2 text-muted hover:text-gold transition-colors font-mono text-xs uppercase tracking-widest">
-                <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Home
-            </button>
-            <h1 class="font-serif text-4xl text-gold mb-16 border-b border-gold-dim pb-6 fade-entry">Complete Artworks Archive</h1>
-            <div id="artworks-grid-full" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16"></div>
-        </div>
+        <!-- FULL PAGE VIEWS (Hidden by default) -->
+        
+        <!-- Artworks Full -->
+        <div id="view-artworks-full" class="view-section hidden pt-10">
+            <button onclick="switchView('view-home')" class="mb-8 flex items-center gap-2 text-muted hover:text-gold transition-colors font-mono text-xs uppercase tracking-widest">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Home
+            </button>
+            <h1 class="font-serif text-4xl text-gold mb-16 border-b border-gold-dim pb-6 fade-entry">Complete Artworks Archive</h1>
+            <div id="artworks-grid-full" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16"></div>
+        </div>
 
-        <!-- Experiments Full -->
-        <div id="view-experiments-full" class="view-section hidden pt-10">
-            <button onclick="switchView('view-home')" class="mb-8 flex items-center gap-2 text-muted hover:text-gold transition-colors font-mono text-xs uppercase tracking-widest">
-                <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Home
-            </button>
-            <h1 class="font-serif text-4xl text-gold mb-16 border-b border-gold-dim pb-6 fade-entry">Experimental Lab Results</h1>
-            <div id="experiments-grid-full" class="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8"></div>
-        </div>
+        <!-- Experiments Full -->
+        <div id="view-experiments-full" class="view-section hidden pt-10">
+            <button onclick="switchView('view-home')" class="mb-8 flex items-center gap-2 text-muted hover:text-gold transition-colors font-mono text-xs uppercase tracking-widest">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Home
+            </button>
+            <h1 class="font-serif text-4xl text-gold mb-16 border-b border-gold-dim pb-6 fade-entry">Experimental Lab Results</h1>
+            <div id="experiments-grid-full" class="columns-1 md:columns-2 lg:columns-3 gap-8"></div>
+        </div>
 
-        <!-- Shop Full -->
-        <div id="view-shop-full" class="view-section hidden pt-10">
-            <button onclick="switchView('view-home')" class="mb-8 flex items-center gap-2 text-muted hover:text-gold transition-colors font-mono text-xs uppercase tracking-widest">
-                <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Home
-            </button>
-            <h1 class="font-serif text-4xl text-gold mb-16 border-b border-gold-dim pb-6 fade-entry">Shop Collection</h1>
-            <div id="shop-grid-full" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
-        </div>
+        <!-- Shop Full -->
+        <div id="view-shop-full" class="view-section hidden pt-10">
+            <button onclick="switchView('view-home')" class="mb-8 flex items-center gap-2 text-muted hover:text-gold transition-colors font-mono text-xs uppercase tracking-widest">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Home
+            </button>
+            <h1 class="font-serif text-4xl text-gold mb-16 border-b border-gold-dim pb-6 fade-entry">Shop Collection</h1>
+            <div id="shop-grid-full" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+        </div>
 
-    </main>
+    </main>
 
-    <!-- Footer -->
-    <footer class="py-12 border-t border-gold-dim flex flex-col items-center text-center text-muted font-light text-xs tracking-widest uppercase">
-        <p class="mb-6">Connect</p>
-        <div class="flex gap-6 mb-8">
-            <a href="https://www.instagram.com/wigglenwow" target="_blank" rel="noopener noreferrer" class="text-muted hover:text-gold transition-colors"><i data-lucide="instagram" class="w-4 h-4"></i></a>
-            <a href="https://www.youtube.com/@wigglenwow" target="_blank" rel="noopener noreferrer" class="text-muted hover:text-gold transition-colors"><i data-lucide="youtube" class="w-4 h-4"></i></a>
-            <a href="mailto:akpnjani2@gmail.com" class="text-muted hover:text-gold transition-colors"><i data-lucide="mail" class="w-4 h-4"></i></a>
-        </div>
-        <p>Designed with silence and creativity in mind</p>
-        <p class="mt-2" id="year"></p>
-    </footer>
+    <!-- Footer -->
+    <footer class="py-12 border-t border-gold-dim flex flex-col items-center text-center text-muted font-light text-xs tracking-widest uppercase">
+        <p class="mb-6">Connect</p>
+        <div class="flex gap-6 mb-8">
+            <a href="https://www.instagram.com/wigglenwow" target="_blank" rel="noopener noreferrer" class="text-muted hover:text-gold transition-colors"><i data-lucide="instagram" class="w-4 h-4"></i></a>
+            <a href="https://www.youtube.com/@wigglenwow" target="_blank" rel="noopener noreferrer" class="text-muted hover:text-gold transition-colors"><i data-lucide="youtube" class="w-4 h-4"></i></a>
+            <a href="mailto:akpnjani2@gmail.com" class="text-muted hover:text-gold transition-colors"><i data-lucide="mail" class="w-4 h-4"></i></a>
+        </div>
+        <p>Designed with silence and creativity in mind</p>
+        <p class="mt-2" id="year"></p>
+    </footer>
 
-    <!-- JAVASCRIPT LOGIC -->
-    <script>
-        // --- Data Generation & Automation ---
-        const generateItems = (count, category) => {
-            return Array.from({ length: count }, (_, i) => ({
-                id: i + 1,
-                title: `${category} No. ${i + 1}`,
-                year: 2020 + (i % 5),
-                type: ['Oil on Canvas', 'Charcoal', 'Digital', 'Mixed Media'][i % 4],
-                aspect: 'aspect-[3/4]', 
-                price: 80 + (i * 10),
-                imageSeed: i + (category === 'Art' ? 100 : category === 'Exp' ? 500 : 800)
-            }));
-        };
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- Data Generation & Automation ---
+        const generateItems = (count, category) => {
+            return Array.from({ length: count }, (_, i) => ({
+                id: i + 1,
+                title: `${category} No. ${i + 1}`,
+                year: 2020 + (i % 5),
+                type: ['Oil on Canvas', 'Charcoal', 'Digital', 'Mixed Media'][i % 4],
+                aspect: 'aspect-[3/4]', 
+                price: 80 + (i * 10),
+                imageSeed: i + (category === 'Art' ? 100 : category === 'Exp' ? 500 : 800)
+            }));
+        };
 
-        // 1. Map your medium codes to full words
-        const mediumMap = {
-            'w': 'Watercolor',
-            'e': 'Color Pencils',
-            'c': 'Charcoal',
-            'a': 'Acrylic',
-            'g': 'Graphite',
-            'p': 'Pen',
-            'o': 'Oil' 
-        };
+        // 1. Map your medium codes to full words
+        const mediumMap = {
+            'w': 'Watercolor',
+            'e': 'Color Pencils',
+            'c': 'Charcoal',
+            'a': 'Acrylic',
+            'g': 'Graphite',
+            'p': 'Pen',
+            'o': 'Oil' 
+        };
 
-        // 2. All the image files from your GitHub folder
-        const artworkFiles = [
-            "a_n_krishnaji.jpg", "a_o_lady.jpg", "a_o_suit.jpg",
-            "c_o_robin.jpg", "c_o_spiderman.jpg",
-            "e_o_colorfulgirl.jpg", "e_o_drstrange.jpg", "e_o_mythpat.jpg",
-            "g_o_child.jpg", "g_o_oldlady.jpg",
-            "o_n_santaclaus.jpg", "o_n_spiderman.jpg", "o_o_derek.jpg",
-            "p_o_berlin.jpg", "p_o_hulk.jpg", "p_o_ironman.jpg", "p_o_loki.jpg", "p_o_mrbean.jpg", "p_o_spiderman.jpg", "p_o_teenwolf.jpg", "p_o_wanda.jpg",
-            "w_n_boii.jpg", "w_n_joyce.jpg", "w_n_will.jpg", "w_o_2faces.jpg", "w_o_dobbie.jpg", "w_o_dragon.jpg", "w_o_ghostgirl.jpg", "w_o_love.jpg", "w_o_metro.jpg"
-        ];
+        // 2. All the image files from your GitHub folder
+        const artworkFiles = [
+            "a_n_krishnaji.jpg", "a_o_lady.jpg", "a_o_suit.jpg",
+            "c_o_robin.jpg", "c_o_spiderman.jpg",
+            "e_o_colorfulgirl.jpg", "e_o_drstrange.jpg", "e_o_mythpat.jpg",
+            "g_o_child.jpg", "g_o_oldlady.jpg",
+            "o_n_santaclaus.jpg", "o_n_spiderman.jpg", "o_o_derek.jpg",
+            "p_o_berlin.jpg", "p_o_hulk.jpg", "p_o_ironman.jpg", "p_o_loki.jpg", "p_o_mrbean.jpg", "p_o_spiderman.jpg", "p_o_teenwolf.jpg", "p_o_wanda.jpg",
+            "w_n_boii.jpg", "w_n_joyce.jpg", "w_n_will.jpg", "w_o_2faces.jpg", "w_o_dobbie.jpg", "w_o_dragon.jpg", "w_o_ghostgirl.jpg", "w_o_love.jpg", "w_o_metro.jpg"
+        ];
 
-        // 3. The magic function that reads the name
-        const parseArtwork = (filename, index) => {
-            // Split by underscore to just grab the very first letter (medium code)
-            const mediumCode = filename.split('_')[0]; 
-            
-            return {
-                id: index + 1,
-                title: `Artwork No. ${index + 1}`, // Generic uniform title
-                year: '2024', // Standard uniform year
-                // Automatically assigns medium from our map based on the first letter!
-                type: mediumMap[mediumCode] || 'Mixed Media', 
-                aspect: 'aspect-[3/4]',
-                image: `images/${filename}`
-            };
-        };
+        // 3. The magic function that reads the name
+        const formatTitle = (raw) => {
+            let t = raw.charAt(0).toUpperCase() + raw.slice(1);
+            // Quick formatting for specific recognizable names in your list
+            const fixes = {
+                'Drstrange': 'Dr. Strange',
+                'Mrbean': 'Mr. Bean',
+                'Teenwolf': 'Teen Wolf',
+                'Colorfulgirl': 'Colorful Girl',
+                'Santaclaus': 'Santa Claus',
+                'Ghostgirl': 'Ghost Girl',
+                'Oldlady': 'Old Lady',
+                'Spiderman': 'Spider-Man',
+                'Ironman': 'Iron Man',
+                '2faces': 'Two Faces'
+            };
+            return fixes[t] || t;
+        };
 
-        const DATA = {
-            // Automatically process every file in your list
-            artworks: artworkFiles.map((file, i) => parseArtwork(file, i)),
-            
-            experiments: [
-                // Load custom experiments from your screenshots
-                { id: 1, title: 'Process study No. 1', year: 'Archive', type: 'Experiment', imageSeed: 501, image: 'images/exp1.jpg' },
-                { id: 2, title: 'Process study No. 2', year: 'Archive', type: 'Experiment', imageSeed: 502, image: 'images/exp2.jpg' },
-                ...generateItems(38, 'Exp')
-            ],
-            shop: generateItems(30, 'Print')
-        };
+        const parseArtwork = (filename, index) => {
+            // Split by underscore to just grab the very first letter (medium code)
+            const parts = filename.split('_');
+            const mediumCode = parts[0]; 
+            // Extract the actual name of the art piece from the filename!
+            const rawTitle = parts.length >= 3 ? parts[2].split('.')[0] : `Artwork No. ${index + 1}`;
+            
+            return {
+                id: index + 1,
+                title: formatTitle(rawTitle), 
+                year: '2024', // Standard uniform year
+                // Automatically assigns medium from our map based on the first letter!
+                type: mediumMap[mediumCode] || 'Mixed Media', 
+                aspect: 'aspect-[3/4]',
+                image: `images/${filename}`,
+                imageSeed: index + 100
+            };
+        };
 
-        // --- Render Functions ---
+        const DATA = {
+            // Automatically process every file in your list
+            artworks: artworkFiles.map((file, i) => parseArtwork(file, i)),
+            
+            experiments: [
+                // Load custom experiments from your screenshots
+                { id: 1, title: 'Process study No. 1', year: 'Archive', type: 'Experiment', imageSeed: 501, image: 'images/exp1.jpg' },
+                { id: 2, title: 'Process study No. 2', year: 'Archive', type: 'Experiment', imageSeed: 502, image: 'images/exp2.jpg' },
+                ...generateItems(4, 'Exp') // Reduced fake placeholders so real art shines
+            ],
+            shop: generateItems(9, 'Print')
+        };
 
-        function createArtworkCard(work, delay = 0) {
-            // Check if user provided a custom image, otherwise use placeholder
-            const imgSrc = work.image ? work.image : `https://picsum.photos/seed/${work.imageSeed}/800/1000`;
-            
-            return `
-            <div class="fade-entry group cursor-pointer" style="animation-delay: ${delay}ms">
-                <div class="w-full ${work.aspect} bg-surface overflow-hidden relative mb-4 border border-gold-dim">
-                    <img src="${imgSrc}" alt="${work.title}" loading="lazy" class="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000 ease-out">
-                </div>
-                <div class="flex justify-between items-baseline text-gold">
-                    <h3 class="font-serif text-xl">${work.title}</h3>
-                    <span class="font-mono text-xs text-muted">${work.year}</span>
-                </div>
-                <p class="text-sm font-light text-paper mt-1">${work.type}</p>
-            </div>
-            `;
-        }
+        // --- Render Functions ---
 
-        function createExperimentCard(item, delay = 0) {
-            const imgSrc = item.image ? item.image : `https://picsum.photos/seed/${item.imageSeed}/600/400`;
-            return `
-            <div class="break-inside-avoid mb-8 fade-entry" style="animation-delay: ${delay}ms">
-                <div class="bg-surface p-6 rounded-sm border border-gold-dim hover:border-gold transition-colors duration-500">
-                    <div class="aspect-video bg-surface-light w-full mb-4 overflow-hidden grayscale hover:grayscale-0 transition-all duration-700">
-                        <img src="${imgSrc}" loading="lazy" alt="Process" class="w-full h-full object-cover opacity-90">
-                    </div>
-                    <p class="font-mono text-xs text-muted mb-2">Exp. 0${item.id}</p>
-                    <p class="font-serif text-gold">Process study No. ${item.id}</p>
-                </div>
-            </div>
-            `;
-        }
+        function createArtworkCard(work, delay = 0) {
+            // Check if user provided a custom image, otherwise use placeholder fallback
+            const imgSrc = work.image ? work.image : `https://picsum.photos/seed/${work.imageSeed}/800/1000`;
+            const fallbackSrc = `https://picsum.photos/seed/${work.imageSeed}/800/1000`;
+            
+            return `
+            <div class="fade-entry group cursor-pointer" style="animation-delay: ${delay}ms">
+                <div class="w-full ${work.aspect} bg-surface overflow-hidden relative mb-4 border border-gold-dim">
+                    <img src="${imgSrc}" onerror="this.onerror=null;this.src='${fallbackSrc}';" alt="${work.title}" loading="lazy" class="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000 ease-out">
+                </div>
+                <div class="flex justify-between items-baseline text-gold">
+                    <h3 class="font-serif text-xl">${work.title}</h3>
+                    <span class="font-mono text-xs text-muted">${work.year}</span>
+                </div>
+                <p class="text-sm font-light text-paper mt-1">${work.type}</p>
+            </div>
+            `;
+        }
 
-        function createShopCard(item, delay = 0) {
-            return `
-            <div class="fade-entry group" style="animation-delay: ${delay}ms">
-                <div class="aspect-square bg-surface mb-4 overflow-hidden border border-gold-dim">
-                    <img src="https://picsum.photos/seed/${item.imageSeed}/500/500" loading="lazy" alt="Print" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 opacity-90 group-hover:opacity-100">
-                </div>
-                <div class="flex justify-between items-start">
-                    <div>
-                        <h3 class="font-serif text-lg text-gold">${item.title}</h3>
-                        <p class="text-xs text-muted mt-1 uppercase tracking-wider">Limited Print</p>
-                    </div>
-                    <span class="font-mono text-sm text-paper">$${item.price}</span>
-                </div>
-                <a href="https://ig.me/m/wigglenwow" target="_blank" rel="noopener noreferrer" class="mt-4 block text-center w-full py-2 border border-gold-dim text-muted text-xs uppercase tracking-widest hover:bg-gold hover:text-midnight transition-colors">
-                    Order Now
-                </a>
-            </div>
-            `;
-        }
+        function createExperimentCard(item, delay = 0) {
+            const imgSrc = item.image ? item.image : `https://picsum.photos/seed/${item.imageSeed}/600/400`;
+            const fallbackSrc = `https://picsum.photos/seed/${item.imageSeed}/600/400`;
+            return `
+            <div class="break-inside-avoid inline-block w-full mb-8">
+                <div class="fade-entry bg-surface p-6 rounded-sm border border-gold-dim hover:border-gold transition-colors duration-500" style="animation-delay: ${delay}ms">
+                    <div class="aspect-video bg-surface-light w-full mb-4 overflow-hidden grayscale hover:grayscale-0 transition-all duration-700">
+                        <img src="${imgSrc}" onerror="this.onerror=null;this.src='${fallbackSrc}';" loading="lazy" alt="Process" class="w-full h-full object-cover opacity-90">
+                    </div>
+                    <p class="font-mono text-xs text-muted mb-2">Exp. 0${item.id}</p>
+                    <p class="font-serif text-gold">${item.title}</p>
+                </div>
+            </div>
+            `;
+        }
 
-        // --- Initialization ---
+        function createShopCard(item, delay = 0) {
+            return `
+            <div class="fade-entry group" style="animation-delay: ${delay}ms">
+                <div class="aspect-square bg-surface mb-4 overflow-hidden border border-gold-dim">
+                    <img src="https://picsum.photos/seed/${item.imageSeed}/500/500" loading="lazy" alt="Print" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 opacity-90 group-hover:opacity-100">
+                </div>
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="font-serif text-lg text-gold">${item.title}</h3>
+                        <p class="text-xs text-muted mt-1 uppercase tracking-wider">Limited Print</p>
+                    </div>
+                    <span class="font-mono text-sm text-paper">$${item.price}</span>
+                </div>
+                <a href="https://ig.me/m/wigglenwow" target="_blank" rel="noopener noreferrer" class="mt-4 block text-center w-full py-2 border border-gold-dim text-muted text-xs uppercase tracking-widest hover:bg-gold hover:text-midnight transition-colors">
+                    Order Now
+                </a>
+            </div>
+            `;
+        }
 
-        function init() {
-            // Render Previews
-            
-            // Randomize items for all Home Previews
-            const shuffledArt = [...DATA.artworks].sort(() => 0.5 - Math.random());
-            const shuffledExp = [...DATA.experiments].sort(() => 0.5 - Math.random());
-            const shuffledShop = [...DATA.shop].sort(() => 0.5 - Math.random());
-            
-            document.getElementById('artworks-grid-preview').innerHTML = shuffledArt.slice(0, 6).map((w, i) => createArtworkCard(w, i * 100)).join('');
-            document.getElementById('experiments-grid-preview').innerHTML = shuffledExp.slice(0, 6).map((w, i) => createExperimentCard(w, i * 100)).join('');
-            document.getElementById('shop-grid-preview').innerHTML = shuffledShop.slice(0, 3).map((w, i) => createShopCard(w, i * 100)).join('');
+        // --- Initialization ---
 
-            // Render Full Lists
-            document.getElementById('artworks-grid-full').innerHTML = DATA.artworks.map(w => createArtworkCard(w)).join('');
-            document.getElementById('experiments-grid-full').innerHTML = DATA.experiments.map(w => createExperimentCard(w)).join('');
-            document.getElementById('shop-grid-full').innerHTML = DATA.shop.map(w => createShopCard(w)).join('');
+        function init() {
+            // Render Previews
+            
+            // Randomize items for all Home Previews
+            const shuffledArt = [...DATA.artworks].sort(() => 0.5 - Math.random());
+            const shuffledExp = [...DATA.experiments].sort(() => 0.5 - Math.random());
+            const shuffledShop = [...DATA.shop].sort(() => 0.5 - Math.random());
+            
+            document.getElementById('artworks-grid-preview').innerHTML = shuffledArt.slice(0, 6).map((w, i) => createArtworkCard(w, i * 100)).join('');
+            document.getElementById('experiments-grid-preview').innerHTML = shuffledExp.slice(0, 6).map((w, i) => createExperimentCard(w, i * 100)).join('');
+            document.getElementById('shop-grid-preview').innerHTML = shuffledShop.slice(0, 3).map((w, i) => createShopCard(w, i * 100)).join('');
 
-            // Set Year
-            document.getElementById('year').innerText = `© ${new Date().getFullYear()} Aryan Kumar Pawan`;
+            // Render Full Lists
+            document.getElementById('artworks-grid-full').innerHTML = DATA.artworks.map(w => createArtworkCard(w)).join('');
+            document.getElementById('experiments-grid-full').innerHTML = DATA.experiments.map(w => createExperimentCard(w)).join('');
+            document.getElementById('shop-grid-full').innerHTML = DATA.shop.map(w => createShopCard(w)).join('');
 
-            // Initialize Icons
-            lucide.createIcons();
+            // Set Year
+            document.getElementById('year').innerText = `© ${new Date().getFullYear()} Aryan Kumar Pawan`;
 
-            // Setup Scroll Listener for Nav Active States
-            window.addEventListener('scroll', updateActiveNav);
-        }
+            // Initialize Icons
+            lucide.createIcons();
 
-        // --- Navigation Logic ---
+            // Setup Scroll Listener for Nav Active States
+            window.addEventListener('scroll', updateActiveNav);
+        }
 
-        function updateActiveNav() {
-            const sections = ['home', 'artworks', 'experiments', 'shop', 'custom', 'about'];
-            const scrollPos = window.scrollY + 250; 
-            
-            // Only update if we are in home view
-            if(document.getElementById('view-home').classList.contains('hidden')) {
-                document.querySelectorAll('.nav-link').forEach(link => {
-                    link.classList.remove('text-gold', 'font-normal');
-                    link.classList.add('text-muted');
-                });
-                return;
-            }
+        // --- Navigation Logic ---
 
-            sections.forEach(section => {
-                const el = document.getElementById(section);
-                if (el && el.offsetTop <= scrollPos && (el.offsetTop + el.offsetHeight) > scrollPos) {
-                    document.querySelectorAll('.nav-link').forEach(link => {
-                        if (link.dataset.target === section) {
-                            link.classList.add('text-gold', 'font-normal');
-                            link.classList.remove('text-muted');
-                            // Add underline effect
-                            link.classList.add('after:content-[""]', 'after:absolute', 'after:-bottom-1', 'after:left-0', 'after:w-full', 'after:h-px', 'after:bg-gold');
-                        } else {
-                            link.classList.remove('text-gold', 'font-normal', 'after:content-[""]', 'after:absolute', 'after:-bottom-1', 'after:left-0', 'after:w-full', 'after:h-px', 'after:bg-gold');
-                            link.classList.add('text-muted');
-                        }
-                    });
-                }
-            });
-        }
+        function updateActiveNav() {
+            // Dynamically grab all section targets from our links
+            const sections = Array.from(document.querySelectorAll('.nav-link')).map(link => link.dataset.target);
+            const scrollPos = window.scrollY + 250; 
+            
+            // Only update if we are in home view
+            if(document.getElementById('view-home').classList.contains('hidden')) {
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active', 'text-gold');
+                    link.classList.add('text-muted');
+                });
+                return;
+            }
 
-        function switchView(viewId, pushToHistory = true) {
-            // Scroll to top
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            sections.forEach(section => {
+                const el = document.getElementById(section);
+                if (el && el.offsetTop <= scrollPos && (el.offsetTop + el.offsetHeight) > scrollPos) {
+                    document.querySelectorAll('.nav-link').forEach(link => {
+                        if (link.dataset.target === section) {
+                            link.classList.add('active', 'text-gold');
+                            link.classList.remove('text-muted');
+                        } else {
+                            link.classList.remove('active', 'text-gold');
+                            link.classList.add('text-muted');
+                        }
+                    });
+                }
+            });
+        }
 
-            // Hide all views
-            document.querySelectorAll('.view-section').forEach(el => {
-                el.classList.add('hidden');
-            });
+        function switchView(viewId, pushToHistory = true) {
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
 
-            // Show target view
-            const target = document.getElementById(viewId);
-            if (target) {
-                target.classList.remove('hidden');
-                target.classList.add('animate-fade-in-up'); // Re-trigger animation
-            }
+            // Hide all views
+            document.querySelectorAll('.view-section').forEach(el => {
+                el.classList.add('hidden');
+            });
 
-            // Update Icons (in case they need re-render)
-            lucide.createIcons();
-            
-            // Force nav update
-            if(viewId !== 'view-home') {
-                 document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('text-gold', 'after:bg-gold'));
-            }
+            // Show target view
+            const target = document.getElementById(viewId);
+            if (target) {
+                target.classList.remove('hidden');
+                target.classList.add('animate-fade-in-up'); // Re-trigger animation
+            }
 
-            // Update Browser History so the Back button works
-            if (pushToHistory) {
-                const hash = viewId === 'view-home' ? '' : '#' + viewId.replace('view-', '');
-                history.pushState({ viewId: viewId }, '', window.location.pathname + window.location.search + hash);
-            }
-        }
+            // Update Icons (in case they need re-render)
+            lucide.createIcons();
+            
+            // Force nav update
+            if(viewId !== 'view-home') {
+                 document.querySelectorAll('.nav-link').forEach(link => {
+                     link.classList.remove('active', 'text-gold');
+                     link.classList.add('text-muted');
+                 });
+            }
 
-        function navigateTo(target) {
-            const homeView = document.getElementById('view-home');
-            
-            // If we are not on home view, go there first
-            if (homeView.classList.contains('hidden')) {
-                switchView('view-home');
-                // Wait for view switch then scroll
-                setTimeout(() => {
-                    const el = document.getElementById(target);
-                    if (el) el.scrollIntoView({ behavior: 'smooth' });
-                }, 100);
-            } else {
-                // Just scroll
-                const el = document.getElementById(target);
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
+            // Update Browser History so the Back button works
+            if (pushToHistory) {
+                const hash = viewId === 'view-home' ? '' : '#' + viewId.replace('view-', '');
+                history.pushState({ viewId: viewId }, '', window.location.pathname + window.location.search + hash);
+            }
+        }
 
-        function scrollToSection(id) {
-            navigateTo(id);
-        }
+        function navigateTo(target) {
+            const homeView = document.getElementById('view-home');
+            
+            // If we are not on home view, go there first
+            if (homeView.classList.contains('hidden')) {
+                switchView('view-home');
+                // Wait for view switch then scroll
+                setTimeout(() => {
+                    const el = document.getElementById(target);
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            } else {
+                // Just scroll
+                const el = document.getElementById(target);
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
 
-        // Handle Browser Back/Forward Buttons
-        window.addEventListener('popstate', (event) => {
-            if (event.state && event.state.viewId) {
-                switchView(event.state.viewId, false);
-            } else {
-                const hash = window.location.hash;
-                if (hash) {
-                    const viewId = 'view-' + hash.substring(1);
-                    if (document.getElementById(viewId)) {
-                        switchView(viewId, false);
-                        return;
-                    }
-                }
-                switchView('view-home', false);
-            }
-        });
+        function scrollToSection(id) {
+            navigateTo(id);
+        }
 
-        // Run Init and setup initial history state
-        window.addEventListener('DOMContentLoaded', () => {
-            init();
+        // Handle Browser Back/Forward Buttons
+        window.addEventListener('popstate', (event) => {
+            if (event.state && event.state.viewId) {
+                switchView(event.state.viewId, false);
+            } else {
+                const hash = window.location.hash;
+                if (hash) {
+                    const viewId = 'view-' + hash.substring(1);
+                    if (document.getElementById(viewId)) {
+                        switchView(viewId, false);
+                        return;
+                    }
+                }
+                switchView('view-home', false);
+            }
+        });
 
-            // Handle direct links (e.g., user refreshes page while looking at full archive)
-            const hash = window.location.hash;
-            let startView = 'view-home';
-            if (hash) {
-                const possibleView = 'view-' + hash.substring(1);
-                if (document.getElementById(possibleView)) {
-                    startView = possibleView;
-                }
-            }
-            
-            // Set the initial history state
-            history.replaceState({ viewId: startView }, '', window.location.href);
-            
-            // If starting on a subpage, switch to it without pushing history again
-            if (startView !== 'view-home') {
-                switchView(startView, false);
-            }
-        });
-    </script>
+        // Run Init and setup initial history state
+        window.addEventListener('DOMContentLoaded', () => {
+            init();
+
+            // Handle direct links (e.g., user refreshes page while looking at full archive)
+            const hash = window.location.hash;
+            let startView = 'view-home';
+            if (hash) {
+                const possibleView = 'view-' + hash.substring(1);
+                if (document.getElementById(possibleView)) {
+                    startView = possibleView;
+                }
+            }
+            
+            // Set the initial history state
+            history.replaceState({ viewId: startView }, '', window.location.href);
+            
+            // If starting on a subpage, switch to it without pushing history again
+            if (startView !== 'view-home') {
+                switchView(startView, false);
+            }
+        });
+    </script>
 </body>
 </html>
