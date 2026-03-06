@@ -344,8 +344,8 @@
         // --- Data Generation & Automation ---
         const generateItems = (count, category) => {
             return Array.from({ length: count }, (_, i) => ({
-                id: i + 1,
-                title: `${category} No. ${i + 1}`,
+                id: i + 3, // Start IDs after the real experiments
+                title: `${category} No. ${i + 3}`,
                 year: 2020 + (i % 5),
                 type: ['Oil on Canvas', 'Charcoal', 'Digital', 'Mixed Media'][i % 4],
                 aspect: 'aspect-[3/4]', 
@@ -364,70 +364,112 @@
             'o': 'Oil' 
         };
 
-        // 2. All the image files from your GitHub folder
+        // 2. All the updated image files from your GitHub folder (New 6-part nomenclature)
         const artworkFiles = [
-            "a_n_krishnaji.jpg", "a_o_lady.jpg", "a_o_suit.jpg",
-            "c_o_robin.jpg", "c_o_spiderman.jpg",
-            "e_o_colorfulgirl.jpg", "e_o_drstrange.jpg", "e_o_mythpat.jpg",
-            "g_o_child.jpg", "g_o_oldlady.jpg",
-            "o_n_santaclaus.jpg", "o_n_spiderman.jpg", "o_o_derek.jpg",
-            "p_o_berlin.jpg", "p_o_hulk.jpg", "p_o_ironman.jpg", "p_o_loki.jpg", "p_o_mrbean.jpg", "p_o_spiderman.jpg", "p_o_teenwolf.jpg", "p_o_wanda.jpg",
-            "w_n_boii.jpg", "w_n_joyce.jpg", "w_n_will.jpg", "w_o_2faces.jpg", "w_o_dobbie.jpg", "w_o_dragon.jpg", "w_o_ghostgirl.jpg", "w_o_love.jpg", "w_o_metro.jpg"
+            "a_n_60x70_wooden_5000_krishnaji.jpg",
+            "a_o_A3_300_300_lady.jpg",
+            "a_o_A3_300_NA_suit.jpg",
+            "c_o_A4_100_NA_robin.jpg",
+            "c_o_A4_300_1000_spiderman.jpg",
+            "e_o_A5_100_NA_Colorful_Girl.jpg",
+            "e_o_A5_100_NA_Dr_Strange.jpg",
+            "e_o_NA_100_NA_Mythpat.jpg",
+            "g_o_10x10_100_NA_Child.jpg",
+            "g_o_A5_100_500_Old_Lady.jpg",
+            "o_n_A4_100_500_Santa_Claus.jpg",
+            "o_n_A4_100_500_Spiderman.jpg",
+            "o_o_A4_100_500_Derek.jpg",
+            "p_o_20x30_80_1500_teenwolf.jpg",
+            "p_o_20x30_80_2000_berlin.jpg",
+            "p_o_20x30_80_2000_hulk.jpg",
+            "p_o_20x30_80_2000_ironman.jpg",
+            "p_o_20x30_80_2000_mrbean.jpg",
+            "p_o_20x30_80_2000_spiderman.jpg",
+            "p_o_20x30_80_2000_wanda.jpg",
+            "p_o_20x30_80_2500_loki.jpg",
+            "w_n_A4_300_1000_Love_lonely.jpg",
+            "w_n_A4_300_3000_Will_Byers.jpg",
+            "w_n_A5_300_800_joyce.jpg",
+            "w_o_A4_300_NA_love_expression.jpg",
+            "w_o_A5_300_2000_dobbie.jpg",
+            "w_o_A5_300_2000_msytical_dragon.jpg",
+            "w_o_A5_300_500_ghost_girl.jpg",
+            "w_o_A5_300_NA_Metro.jpg",
+            "w_o_A5_300_NA_love.jpg"
         ];
 
         // 3. The magic function that reads the name
         const formatTitle = (raw) => {
-            let t = raw.charAt(0).toUpperCase() + raw.slice(1);
-            // Quick formatting for specific recognizable names in your list
+            // Split by space, capitalize each word for nice title casing
+            let t = raw.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+            
+            // Fixes for specific file names and typos without needing to rename files
             const fixes = {
-                'Drstrange': 'Dr. Strange',
-                'Mrbean': 'Mr. Bean',
-                'Teenwolf': 'Teen Wolf',
-                'Colorfulgirl': 'Colorful Girl',
-                'Santaclaus': 'Santa Claus',
-                'Ghostgirl': 'Ghost Girl',
-                'Oldlady': 'Old Lady',
-                'Spiderman': 'Spider-Man',
-                'Ironman': 'Iron Man',
-                '2faces': 'Two Faces'
+                'Msytical Dragon': 'Mystical Dragon', 
             };
             return fixes[t] || t;
         };
 
         const parseArtwork = (filename, index) => {
-            // Split by underscore to just grab the very first letter (medium code)
-            const parts = filename.split('_');
-            const mediumCode = parts[0]; 
-            // Extract the actual name of the art piece from the filename!
-            const rawTitle = parts.length >= 3 ? parts[2].split('.')[0] : `Artwork No. ${index + 1}`;
+            const rawName = filename.split('.')[0]; // Remove .jpg
+            const parts = rawName.split('_');
             
-            // Subtly determine if a piece is available for print (e.g., every 3rd piece)
-            const isForSale = index % 3 === 0;
-            const printPrice = 80 + (index % 3 * 10);
+            // STRICT 6-Part Format: medium_age_size_gsm_price_title
+            // If parts are missing, they safely default to 'NA'
+            const mediumCode = parts[0] || 'm'; 
+            const ageCode = parts[1] || 'o'; 
+            const size = parts[2] || 'NA';
+            const gsm = parts[3] || 'NA';
+            const price = parts[4] || 'NA';
+            
+            // Extract the title from index 5 onwards. Replaces underscores in filename with spaces!
+            const titleParts = parts.slice(5);
+            const rawTitle = titleParts.length > 0 ? titleParts.join(' ') : `Artwork No. ${index + 1}`;
+            
+            // Safely parse price, treating 'NA' or empty as 0 to prevent $NaN errors
+            const parsedPrice = (price.toUpperCase() === 'NA') ? 0 : parseInt(price) || 0;
+            const isForSale = parsedPrice > 0;
+            
+            // Format technical specs cleanly
+            // GSM Logic: If it's a number (300) it adds "GSM". If it's a word (Wooden) it just capitalizes the word.
+            let displayGsm = '';
+            if (gsm.toUpperCase() !== 'NA' && gsm !== '0') {
+                displayGsm = isNaN(parseInt(gsm)) ? (gsm.charAt(0).toUpperCase() + gsm.slice(1)) : `${gsm} GSM`;
+            }
+            
+            // Size Logic: Converts "60x70" into cleanly spaced "60 x 70", but ignores "NA"
+            const displaySize = (size.toUpperCase() === 'NA' || size === '0') ? '' : size.replace('x', ' x ');
+            
+            // Connects them with a dot. If one is missing, it handles it gracefully.
+            const specs = [displaySize, displayGsm].filter(Boolean).join(' • '); 
             
             return {
                 id: index + 1,
                 title: formatTitle(rawTitle), 
-                year: '2024', // Standard uniform year
-                // Automatically assigns medium from our map based on the first letter!
+                ageCode: ageCode, // Use n/o strictly for priority sorting
                 type: mediumMap[mediumCode] || 'Mixed Media', 
                 aspect: 'aspect-[3/4]',
                 image: `images/${filename}`,
                 imageSeed: index + 100,
                 isForSale: isForSale,
-                price: printPrice
+                price: parsedPrice,
+                specs: specs // Passes the new info to the card
             };
         };
 
         const DATA = {
-            // Automatically process every file in your list
-            artworks: artworkFiles.map((file, i) => parseArtwork(file, i)),
+            // Automatically process every file, and strictly prioritize 'n' over 'o'
+            artworks: artworkFiles.map((file, i) => parseArtwork(file, i)).sort((a, b) => {
+                if (a.ageCode === 'n' && b.ageCode !== 'n') return -1;
+                if (a.ageCode !== 'n' && b.ageCode === 'n') return 1;
+                return 0;
+            }),
             
             experiments: [
                 // Load custom experiments from your screenshots
                 { id: 1, title: 'Process study No. 1', year: 'Archive', type: 'Experiment', imageSeed: 501, image: 'images/exp1.jpg' },
                 { id: 2, title: 'Process study No. 2', year: 'Archive', type: 'Experiment', imageSeed: 502, image: 'images/exp2.jpg' },
-                ...generateItems(4, 'Exp') // Reduced fake placeholders so real art shines
+                ...generateItems(4, 'Exp') // 4 empty slots that will show the "Yet to be made" placeholder
             ]
         };
 
@@ -441,7 +483,7 @@
             // Minimal, calm purchase link that only renders if the piece is available
             const purchaseLinkHtml = work.isForSale 
                 ? `<a href="https://ig.me/m/wigglenwow" target="_blank" rel="noopener noreferrer" class="mt-4 inline-block text-[10px] uppercase tracking-widest text-muted hover:text-gold border-b border-transparent hover:border-gold transition-all duration-300">
-                    Order Print — $${work.price}
+                    Order Original — $${work.price}
                    </a>` 
                 : '';
             
@@ -452,25 +494,32 @@
                 </div>
                 <div class="flex justify-between items-baseline text-gold">
                     <h3 class="font-serif text-xl">${work.title}</h3>
-                    <span class="font-mono text-xs text-muted">${work.year}</span>
                 </div>
-                <p class="text-sm font-light text-paper mt-1">${work.type}</p>
+                <div class="flex justify-between items-baseline mt-1">
+                    <p class="text-sm font-light text-paper">${work.type}</p>
+                    ${work.specs ? `<span class="font-mono text-[10px] text-muted tracking-wider">${work.specs}</span>` : ''}
+                </div>
                 ${purchaseLinkHtml}
             </div>
             `;
         }
 
         function createExperimentCard(item, delay = 0) {
-            const imgSrc = item.image ? item.image : `https://picsum.photos/seed/${item.imageSeed}/600/400`;
-            const fallbackSrc = `https://picsum.photos/seed/${item.imageSeed}/600/400`;
+            // Checks if it is a real loaded image or one of the generated fake items
+            const hasRealImage = !!item.image;
+            
+            const imageHtml = hasRealImage 
+                ? `<img src="${item.image}" onerror="this.parentElement.innerHTML='<div class=\\'w-full h-full flex items-center justify-center text-muted font-mono text-[10px] tracking-widest uppercase\\'>Not Found</div>';" loading="lazy" alt="Process" class="w-full h-full object-cover opacity-90">`
+                : `<div class="w-full h-full flex items-center justify-center text-muted/30 font-mono text-xs tracking-widest uppercase">Yet to be made</div>`;
+
             return `
             <div class="break-inside-avoid inline-block w-full mb-8">
                 <div class="fade-entry bg-surface p-6 rounded-sm border border-gold-dim hover:border-gold transition-colors duration-500" style="animation-delay: ${delay}ms">
                     <div class="aspect-video bg-surface-light w-full mb-4 overflow-hidden grayscale hover:grayscale-0 transition-all duration-700">
-                        <img src="${imgSrc}" onerror="this.onerror=null;this.src='${fallbackSrc}';" loading="lazy" alt="Process" class="w-full h-full object-cover opacity-90">
+                        ${imageHtml}
                     </div>
                     <p class="font-mono text-xs text-muted mb-2">Exp. 0${item.id}</p>
-                    <p class="font-serif text-gold">${item.title}</p>
+                    <p class="font-serif ${hasRealImage ? 'text-gold' : 'text-muted'}">${item.title}</p>
                 </div>
             </div>
             `;
@@ -481,11 +530,17 @@
         function init() {
             // Render Previews
             
-            // Randomize items for all Home Previews
-            const shuffledArt = [...DATA.artworks].sort(() => 0.5 - Math.random());
-            const shuffledExp = [...DATA.experiments].sort(() => 0.5 - Math.random());
+            // Randomize items for Home Previews, but strictly prioritize 'n' over 'o'
+            const prioritizedArt = [...DATA.artworks].sort((a, b) => {
+                if (a.ageCode !== b.ageCode) {
+                    return a.ageCode === 'n' ? -1 : 1; // Show 'n' first
+                }
+                return 0.5 - Math.random(); // Randomly shuffle pieces of the same priority
+            });
+            const shuffledExp = [...DATA.experiments];
             
-            document.getElementById('artworks-grid-preview').innerHTML = shuffledArt.slice(0, 6).map((w, i) => createArtworkCard(w, i * 100)).join('');
+            // The preview will grab the first 6 items, ensuring they are always your newest!
+            document.getElementById('artworks-grid-preview').innerHTML = prioritizedArt.slice(0, 6).map((w, i) => createArtworkCard(w, i * 100)).join('');
             document.getElementById('experiments-grid-preview').innerHTML = shuffledExp.slice(0, 6).map((w, i) => createExperimentCard(w, i * 100)).join('');
 
             // Render Full Lists
